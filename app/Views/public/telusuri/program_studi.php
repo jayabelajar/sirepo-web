@@ -2,8 +2,8 @@
   <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10 space-y-5">
     <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-5 sm:p-7 lg:p-8 space-y-2">
       <p class="text-[11px] font-semibold tracking-[0.2em] text-emerald-600 uppercase">Telusuri</p>
-      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Telusuri Berdasarkan Program Studi</h1>
-      <p class="text-sm text-slate-600">Pilih program studi untuk melihat repository berdasarkan bidang keilmuan.</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Penelusuran Berdasarkan Program Studi</h1>
+      <p class="text-sm text-slate-600">Pilih program studi untuk menampilkan dokumen sesuai bidang keilmuan.</p>
     </div>
 
     <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-4 sm:p-5">
@@ -19,7 +19,7 @@
             </div>
             <div class="min-w-0">
               <p class="font-semibold text-slate-900"><?= e($p['nama_program_studi']); ?></p>
-              <p class="text-xs text-slate-500"><?= $p['total']; ?> repository</p>
+              <p class="text-xs text-slate-500"><?= $p['total']; ?> dokumen</p>
             </div>
           </a>
         <?php endforeach; ?>
@@ -27,3 +27,4 @@
     </div>
   </section>
 </main>
+

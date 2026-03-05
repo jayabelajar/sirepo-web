@@ -5,7 +5,7 @@
     </h1>
 
     <?php if (empty($items)): ?>
-        <p class="text-sm text-slate-600">Belum ada repository pada tahun ini.</p>
+        <p class="text-sm text-slate-600">Belum ada dokumen pada tahun ini.</p>
     <?php else: ?>
 
     <div class="space-y-3">
@@ -23,3 +23,4 @@
     <?php endif; ?>
 
 </section>
+

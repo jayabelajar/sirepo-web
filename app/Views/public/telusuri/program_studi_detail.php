@@ -5,7 +5,7 @@
     </h1>
 
     <?php if (empty($items)): ?>
-        <p class="text-sm text-slate-600">Tidak ada repository pada program studi ini.</p>
+        <p class="text-sm text-slate-600">Belum ada dokumen pada program studi ini.</p>
     <?php else: ?>
 
     <div class="grid md:grid-cols-3 gap-5">
@@ -20,7 +20,7 @@
 
                 <a href="<?= $base_url; ?>/repository/<?= $r['slug'] ?>"
                    class="text-xs text-emerald-700 inline-flex items-center gap-1 mt-3 hover:underline">
-                    Lihat detail
+                    Detail dokumen
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2"
                          viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
                 </a>
@@ -32,3 +32,4 @@
     <?php endif; ?>
 
 </section>
+

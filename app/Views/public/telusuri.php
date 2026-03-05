@@ -6,8 +6,8 @@
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="space-y-2">
           <p class="text-[11px] font-semibold tracking-[0.2em] text-emerald-600 uppercase">Telusuri</p>
-          <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Cari Repository Berdasarkan Kategori</h1>
-          <p class="text-sm text-slate-600">Pilih filter yang diinginkan untuk melihat daftar repository secara terkelompok.</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">Telusuri Repositori Berdasarkan Kategori</h1>
+          <p class="text-sm text-slate-600">Pilih kategori untuk menampilkan daftar dokumen secara terstruktur.</p>
         </div>
         <div class="w-full md:w-auto flex flex-wrap gap-2 text-[11px] text-emerald-700 font-semibold uppercase tracking-wide">
           <span class="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100">Tahun</span>
@@ -22,7 +22,7 @@
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-500">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
           </span>
-          <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Cari judul, penulis, kata kunci..." class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm">
+          <input type="search" name="q" value="<?= e($filters['q'] ?? '') ?>" placeholder="Cari judul, penulis, atau kata kunci..." class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm">
         </div>
         <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 shadow-sm transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
@@ -41,8 +41,8 @@
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3M4 11h16M5 5h14"/></svg>
           </div>
           <div class="min-w-0">
-          <p class="font-semibold text-slate-900">By Tahun</p>
-          <p class="text-xs text-slate-500">Pengelompokan waktu publikasi repository.</p>
+          <p class="font-semibold text-slate-900">Per Tahun</p>
+          <p class="text-xs text-slate-500">Kelompokkan dokumen berdasarkan tahun publikasi.</p>
         </div>
       </a>
 
@@ -52,7 +52,7 @@
         </div>
         <div class="min-w-0">
           <p class="font-semibold text-slate-900">Program Studi</p>
-          <p class="text-xs text-slate-500">Filter berdasarkan jurusan / departemen.</p>
+          <p class="text-xs text-slate-500">Telusuri dokumen per program studi.</p>
         </div>
       </a>
 
@@ -62,7 +62,7 @@
         </div>
         <div class="min-w-0">
           <p class="font-semibold text-slate-900">Mata Kuliah</p>
-          <p class="text-xs text-slate-500">Topik akademik terkait perkuliahan.</p>
+          <p class="text-xs text-slate-500">Telusuri dokumen per mata kuliah.</p>
         </div>
       </a>
 
@@ -72,7 +72,7 @@
         </div>
         <div class="min-w-0">
           <p class="font-semibold text-slate-900">Jenis Karya</p>
-          <p class="text-xs text-slate-500">Skripsi, jurnal, laporan, dan lainnya.</p>
+          <p class="text-xs text-slate-500">Kelompokkan dokumen berdasarkan jenis karya.</p>
         </div>
       </a>
 
@@ -82,10 +82,11 @@
         </div>
         <div class="min-w-0">
           <p class="font-semibold text-slate-900">Penulis</p>
-          <p class="text-xs text-slate-500">Cari berdasarkan nama penulis/mahasiswa.</p>
+          <p class="text-xs text-slate-500">Telusuri dokumen berdasarkan penulis.</p>
         </div>
       </a>
       </div>
     </div>
   </section>
 </main>
+

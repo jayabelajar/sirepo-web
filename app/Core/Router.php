@@ -95,6 +95,17 @@ class Router
         // ======================
         // 404
         // ======================
+        // Untuk API, kembalikan JSON agar tidak diarahkan ke halaman 404 publik.
+        if (strpos($path, '/api') === 0) {
+            http_response_code(404);
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Endpoint tidak ditemukan.'
+            ]);
+            return;
+        }
+
         http_response_code(404);
         $config = require __DIR__ . '/../../config/config.php';
         $baseUrl = rtrim($config['base_url'] ?? '', '/');

@@ -21,31 +21,31 @@ class HalamanController extends Controller
 
     public function faq()
     {
-        $seo = $this->seo('FAQ', '/faq', 'Pertanyaan yang sering diajukan mengenai penggunaan repository.');
+        $seo = $this->seo('FAQ', '/faq', 'Pertanyaan umum terkait penggunaan layanan repositori.');
         $this->view('public/faq', compact('seo'));
     }
 
     public function panduan()
     {
-        $seo = $this->seo('Panduan Pengguna', '/panduan', 'Panduan lengkap menggunakan fitur-fitur repository.');
+        $seo = $this->seo('Panduan Pengguna', '/panduan', 'Panduan ringkas penggunaan layanan repositori.');
         $this->view('public/panduan', compact('seo'));
     }
 
     public function privasi()
     {
-        $seo = $this->seo('Kebijakan Privasi', '/kebijakan', 'Kebijakan perlindungan data dan privasi pengguna.');
+        $seo = $this->seo('Kebijakan Privasi', '/kebijakan', 'Kebijakan pengelolaan data pengguna dan dokumen repositori.');
         $this->view('public/kebijakan', compact('seo'));
     }
 
     public function ketentuan()
     {
-        $seo = $this->seo('Syarat & Ketentuan', '/syarat', 'Ketentuan penggunaan layanan repositori.');
+        $seo = $this->seo('Syarat & Ketentuan', '/syarat', 'Ketentuan penggunaan layanan repositori akademik.');
         $this->view('public/syarat', compact('seo'));
     }
 
     public function kontak()
     {
-        $seo = $this->seo('Kontak', '/kontak', 'Hubungi pengelola repository untuk dukungan dan kolaborasi.');
+        $seo = $this->seo('Kontak', '/kontak', 'Kontak resmi pengelola repositori untuk informasi layanan.');
         $this->view('public/kontak', compact('seo'));
     }
 }

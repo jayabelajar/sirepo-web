@@ -55,7 +55,7 @@ class Auth
         }
 
         if (!isset($_SESSION['mahasiswa'])) {
-            header('Location: ' . self::baseUrl() . '/login');
+            header('Location: ' . self::baseUrl() . '/login/mahasiswa');
             exit;
         }
 
@@ -71,7 +71,7 @@ class Auth
         self::start();
         unset($_SESSION['mahasiswa']);
         session_destroy();
-        header('Location: ' . self::baseUrl() . '/login');
+        header('Location: ' . self::baseUrl() . '/login/mahasiswa');
         exit;
     }
 
@@ -96,7 +96,7 @@ class Auth
         self::start();
 
         if (!isset($_SESSION['dosen'])) {
-            header('Location: ' . self::baseUrl() . '/__dosen/login');
+            header('Location: ' . self::baseUrl() . '/login/dosen');
             exit;
         }
 
@@ -112,7 +112,7 @@ class Auth
         self::start();
         unset($_SESSION['dosen']);
         session_destroy();
-        header('Location: ' . self::baseUrl() . '/__dosen/login');
+        header('Location: ' . self::baseUrl() . '/login/dosen');
         exit;
     }
 
@@ -137,7 +137,7 @@ class Auth
         self::start();
 
         if (!isset($_SESSION['admin'])) {
-            header('Location: ' . self::baseUrl() . '/__admin/login');
+            header('Location: ' . self::baseUrl() . '/login/admin');
             exit;
         }
 
@@ -153,7 +153,7 @@ class Auth
         self::start();
         unset($_SESSION['admin']);
         session_destroy();
-        header('Location: ' . self::baseUrl() . '/__admin/login');
+        header('Location: ' . self::baseUrl() . '/login/admin');
         exit;
     }
 

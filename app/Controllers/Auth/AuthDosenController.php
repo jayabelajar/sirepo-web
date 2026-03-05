@@ -21,7 +21,7 @@ class AuthDosenController extends Controller
             return $this->redirect('/dosen/dashboard');
         }
 
-        $this->view('auth/login-dosen', [
+        return $this->view('auth/login-dosen', [
             'page_title' => 'Login Dosen',
         ], 'auth');
     }
@@ -29,11 +29,11 @@ class AuthDosenController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/__dosen/login');
+            return $this->redirect('/login/dosen');
         }
 
         if (!Csrf::check($_POST['csrf_token'] ?? null)) {
-            $this->redirect('/__dosen/login?error=csrf');
+            return $this->redirect('/login/dosen?error=csrf');
         }
 
         $emailOrUsername = trim($_POST['email'] ?? '');
@@ -43,12 +43,12 @@ class AuthDosenController extends Controller
         if (!$result['success']) {
             $reason = $result['reason'] ?? 'invalid';
             if ($reason === 'throttled') {
-                $this->redirect('/__dosen/login?error=throttled');
+                return $this->redirect('/login/dosen?error=throttled');
             }
             if ($reason === 'banned') {
-                $this->redirect('/__dosen/login?error=banned');
+                return $this->redirect('/login/dosen?error=banned');
             }
-            $this->redirect('/__dosen/login?error=invalid');
+            return $this->redirect('/login/dosen?error=invalid');
         }
 
         Auth::loginDosen($result['user']);
@@ -66,6 +66,6 @@ class AuthDosenController extends Controller
         );
 
         // Arahkan ke dashboard dosen
-        $this->redirect('/dosen/dashboard');
+        return $this->redirect('/dosen/dashboard');
     }
 }

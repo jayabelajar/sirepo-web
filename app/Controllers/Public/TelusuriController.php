@@ -70,7 +70,7 @@ class TelusuriController extends Controller
 
             $seo = [
                 'title'       => 'Hasil Pencarian "' . $filters['q'] . '" | ' . $appName,
-                'description' => 'Menampilkan hasil pencarian untuk "' . $filters['q'] . '" di ' . $appName . '.',
+                'description' => 'Hasil penelusuran dokumen untuk kata kunci "' . $filters['q'] . '" di ' . $appName . '.',
                 'canonical'   => $canonicalSearch,
                 'robots'      => 'noindex,follow'
             ];
@@ -89,7 +89,7 @@ class TelusuriController extends Controller
 
         $seo = [
             'title'       => 'Telusuri Repository | ' . $appName,
-            'description' => 'Jelajahi repository berdasarkan kata kunci, tahun, program studi, jenis karya, dan penulis.',
+            'description' => 'Telusuri dokumen berdasarkan kata kunci, tahun, program studi, jenis karya, dan penulis.',
             'canonical'   => $base . '/telusuri',
         ];
 
@@ -113,7 +113,7 @@ class TelusuriController extends Controller
             'years' => $years,
             'seo'   => [
                 'title'       => 'Telusuri Berdasarkan Tahun | ' . $appName,
-                'description' => 'Pilih tahun publikasi untuk menelusuri repository di ' . $appName . '.',
+                'description' => 'Pilih tahun publikasi untuk menelusuri dokumen di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/year',
             ],
         ]);
@@ -132,7 +132,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => "Repository Tahun $tahun | " . $appName,
-                'description' => "Kumpulan repository tahun $tahun di $appName.",
+                'description' => "Kumpulan dokumen tahun $tahun di $appName.",
                 'canonical'   => $base . '/telusuri/year/' . rawurlencode((string) $tahun),
             ],
         ]);
@@ -150,7 +150,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => 'Program Studi | ' . $appName,
-                'description' => 'Jelajahi repository berdasarkan program studi di ' . $appName . '.',
+                'description' => 'Telusuri dokumen berdasarkan program studi di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/program-studi',
             ],
         ]);
@@ -175,7 +175,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => 'Mata Kuliah | ' . $appName,
-                'description' => 'Jelajahi repository berdasarkan mata kuliah di ' . $appName . '.',
+                'description' => 'Telusuri dokumen berdasarkan mata kuliah di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/mata-kuliah',
             ],
         ]);
@@ -195,7 +195,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => $title . ' | ' . $appName,
-                'description' => 'Daftar repository mata kuliah ' . $title . ' di ' . $appName . '.',
+                'description' => 'Daftar dokumen mata kuliah ' . $title . ' di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/mata-kuliah/' . rawurlencode((string) $id),
             ],
         ]);
@@ -213,7 +213,7 @@ class TelusuriController extends Controller
             'authors' => $authors,
             'seo'     => [
                 'title'       => 'Penulis | ' . $appName,
-                'description' => 'Jelajahi repository berdasarkan penulis di ' . $appName . '.',
+                'description' => 'Telusuri dokumen berdasarkan penulis di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/author',
             ],
         ]);
@@ -233,7 +233,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => $title . ' | ' . $appName,
-                'description' => 'Daftar repository oleh ' . urldecode($name) . ' di ' . $appName . '.',
+                'description' => 'Daftar dokumen oleh ' . urldecode($name) . ' di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/author/' . rawurlencode($name),
                 'robots'      => 'noindex,follow',
             ],
@@ -252,7 +252,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => 'Jenis Karya | ' . $appName,
-                'description' => 'Telusuri repository berdasarkan jenis karya di ' . $appName . '.',
+                'description' => 'Telusuri dokumen berdasarkan jenis karya di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/jenis-karya',
             ],
         ]);
@@ -272,7 +272,7 @@ class TelusuriController extends Controller
             'items' => $items,
             'seo'   => [
                 'title'       => 'Jenis Karya ' . $title . ' | ' . $appName,
-                'description' => 'Kumpulan repository dengan jenis karya ' . $title . ' di ' . $appName . '.',
+                'description' => 'Kumpulan dokumen dengan jenis karya ' . $title . ' di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/jenis-karya/' . rawurlencode($jenis),
             ],
         ]);

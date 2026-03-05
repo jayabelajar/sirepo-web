@@ -53,14 +53,7 @@ $schemaData = [
 ];
 ?>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json"><?= json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
-
-<style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-</style>
 
 <div class="min-h-screen bg-slate-50 text-slate-800">
 
@@ -71,9 +64,9 @@ $schemaData = [
         <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             
             <nav class="flex items-center gap-2 text-xs text-emerald-200 mb-6 font-medium">
-                <a href="<?= $base_url ?>" class="hover:text-white transition-colors">Home</a>
+                <a href="<?= $base_url ?>" class="hover:text-white transition-colors">Beranda</a>
                 <span>/</span>
-                <a href="<?= $base_url ?>/telusuri" class="hover:text-white transition-colors">Repository</a>
+                <a href="<?= $base_url ?>/telusuri" class="hover:text-white transition-colors">Repositori</a>
                 <span>/</span>
                 <span class="text-white truncate max-w-[200px]"><?= e($jenisKarya) ?></span>
             </nav>
@@ -136,7 +129,7 @@ $schemaData = [
                     <?php if (!empty($repo['abstrak'])): ?>
                         <?= nl2br(e($repo['abstrak'])) ?>
                     <?php else: ?>
-                        <p class="text-slate-400 italic bg-slate-50 p-4 rounded text-center text-sm">Belum ada abstrak.</p>
+                        <p class="text-slate-400 italic bg-slate-50 p-4 rounded text-center text-sm">Abstrak belum tersedia.</p>
                     <?php endif; ?>
                 </div>
 
@@ -219,24 +212,24 @@ $schemaData = [
                         <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         </div>
-                        <h2 class="text-lg font-bold text-slate-800">Akses File</h2>
+                        <h2 class="text-lg font-bold text-slate-800">Akses Dokumen</h2>
                     </div>
 
                     <div class="space-y-3">
                         <?php if ($hasFile): ?>
                             <a href="<?= $fileUrl ?>" target="_blank" class="flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-emerald-200">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                Unduh Full Text
+                                Unduh Dokumen
                             </a>
                         <?php else: ?>
                             <div class="w-full bg-slate-50 text-slate-400 px-4 py-3 rounded-xl font-medium text-xs text-center border border-slate-100 cursor-not-allowed">
-                                File belum tersedia
+                                Dokumen belum tersedia
                             </div>
                         <?php endif; ?>
 
                         <button onclick="shareLink()" class="flex w-full items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-emerald-300 px-4 py-3 rounded-xl font-bold text-sm transition-all">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                            Bagikan Halaman
+                            Bagikan Tautan
                         </button>
 
                         <?php if ($bookmarkable && !empty($repo['slug'])): ?>
@@ -246,7 +239,7 @@ $schemaData = [
                                     <svg class="w-5 h-5 <?= $isBookmarked ? 'text-emerald-500 fill-emerald-500' : 'text-slate-400' ?>" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                     </svg>
-                                    <?= $isBookmarked ? 'Tersimpan' : 'Simpan Bookmark' ?>
+                                    <?= $isBookmarked ? 'Tersimpan' : 'Simpan' ?>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -268,7 +261,8 @@ function shareLink() {
         }).catch(console.error);
     } else {
         navigator.clipboard.writeText(window.location.href);
-        alert('Tautan berhasil disalin!');
+        alert('Tautan berhasil disalin.');
     }
 }
 </script>
+

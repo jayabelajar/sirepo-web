@@ -7,15 +7,15 @@
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Hasil Pencarian</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Hasil Penelusuran</h1>
         <p class="text-sm text-slate-600 mt-1">
-          Menampilkan hasil berdasarkan kata kunci yang kamu gunakan.
+          Menampilkan dokumen berdasarkan kata kunci yang digunakan.
         </p>
       </div>
 
       <?php if (!empty($total)): ?>
         <p class="text-xs text-slate-500">
-          <span class="font-semibold text-slate-800"><?= (int)$total ?></span> hasil ditemukan.
+          <span class="font-semibold text-slate-800"><?= (int)$total ?></span> hasil ditemukan
         </p>
       <?php endif; ?>
     </div>
@@ -44,7 +44,7 @@
     <?php if (empty($repositories)): ?>
 
       <div class="bg-white border border-dashed border-slate-200 rounded-2xl p-6 text-center text-sm text-slate-500">
-        Tidak ada repository yang cocok dengan pencarian Anda.
+        Tidak ada dokumen yang sesuai dengan penelusuran Anda.
       </div>
 
     <?php else: ?>
@@ -89,7 +89,7 @@
             <div class="mt-3 flex items-center justify-between gap-2">
               <a href="<?= $base_url; ?>/repository/<?= e($item['slug'] ?? '') ?>"
                  class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:underline">
-                Lihat detail
+                Detail dokumen
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path d="M9 5l7 7-7 7"/>
                 </svg>
@@ -102,3 +102,4 @@
     <?php endif; ?>
   </section>
 </main>
+

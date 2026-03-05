@@ -15,7 +15,7 @@ class TentangController extends Controller
         return $this->view('public/tentang', [
             'seo' => [
                 'title'       => 'Tentang | ' . $appName,
-                'description' => 'Profil dan tujuan ' . $appName . ' sebagai repositori resmi Institut Agama Islam Hasan Jufri.',
+                'description' => 'Profil layanan repositori akademik ' . $appName . '.',
                 'canonical'   => $base . '/tentang',
             ]
         ], 'public');

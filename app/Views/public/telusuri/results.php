@@ -6,22 +6,19 @@ $repoThumb = $base_url . '/assets/img/repo-default.svg';
 $total = isset($total) ? (int) $total : count($items);
 ?>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
-
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-slate-50 min-h-screen">
     
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
             <h1 class="text-3xl font-bold text-slate-900 tracking-tight"><?= e($heading) ?></h1>
-            <p class="text-sm text-slate-500 mt-2 font-medium">Menampilkan arsip digital berdasarkan preferensi Anda.</p>
+            <p class="text-sm text-slate-500 mt-2 font-medium">Menampilkan dokumen berdasarkan parameter penelusuran.</p>
         </div>
 
         <?php if ($total): ?>
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <p class="text-xs font-semibold text-slate-700">
-                    <?= $total ?> Dokumen Ditemukan
+                    <?= $total ?> dokumen ditemukan
                 </p>
             </div>
         <?php endif; ?>
@@ -32,8 +29,8 @@ $total = isset($total) ? (int) $total : count($items);
             <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
                 <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
-            <h3 class="text-slate-900 font-semibold mb-1">Tidak ada hasil ditemukan</h3>
-            <p class="text-sm text-slate-500">Coba gunakan kata kunci lain atau kurangi filter pencarian Anda.</p>
+            <h3 class="text-slate-900 font-semibold mb-1">Tidak ada dokumen ditemukan</h3>
+            <p class="text-sm text-slate-500">Silakan gunakan kata kunci lain atau sesuaikan filter penelusuran.</p>
         </div>
     <?php else: ?>
         <div class="grid gap-6 md:grid-cols-2">
@@ -64,7 +61,7 @@ $total = isset($total) ? (int) $total : count($items);
                         </h2>
 
                         <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4 flex-1">
-                            <?= e($item['abstrak'] ?? 'Tidak ada ringkasan tersedia.') ?>
+                            <?= e($item['abstrak'] ?? 'Ringkasan belum tersedia.') ?>
                         </p>
 
                         <div class="flex items-center justify-between pt-3 border-t border-slate-50 mt-auto">
@@ -84,7 +81,7 @@ $total = isset($total) ? (int) $total : count($items);
 
                             <?php if (!empty($item['slug'])): ?>
                                 <a href="<?= $base_url; ?>/repository/<?= e($item['slug']) ?>" class="absolute inset-0 z-10 focus:outline-none">
-                                    <span class="sr-only">Lihat detail</span>
+                                    <span class="sr-only">Detail dokumen</span>
                                 </a>
                                 <div class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -98,3 +95,4 @@ $total = isset($total) ? (int) $total : count($items);
         </div>
     <?php endif; ?>
 </section>
+

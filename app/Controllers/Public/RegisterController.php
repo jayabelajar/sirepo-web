@@ -145,6 +145,6 @@ class RegisterController extends Controller
             return $this->redirect('/admin/dashboard');
         }
 
-        return $this->redirect('/login');
+        return $this->redirect('/login/mahasiswa');
     }
 }

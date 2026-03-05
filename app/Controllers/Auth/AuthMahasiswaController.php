@@ -29,7 +29,7 @@ class AuthMahasiswaController extends Controller
     public function login()
     {
         if (!Csrf::check($_POST['csrf_token'] ?? null)) {
-            return $this->redirect('/login?error=csrf');
+            return $this->redirect('/login/mahasiswa?error=csrf');
         }
 
         // Hindari memodifikasi password dengan sanitizer; cukup trim.
@@ -37,19 +37,19 @@ class AuthMahasiswaController extends Controller
         $password = trim($_POST['password'] ?? '');
 
         if ($email === '' || $password === '') {
-            return $this->redirect('/login?error=empty');
+            return $this->redirect('/login/mahasiswa?error=empty');
         }
 
         $result = Auth::attempt($email, $password, 'mahasiswa');
         if (!$result['success']) {
             $reason = $result['reason'] ?? 'invalid';
             if ($reason === 'throttled') {
-                return $this->redirect('/login?error=throttled');
+                return $this->redirect('/login/mahasiswa?error=throttled');
             }
             if ($reason === 'banned') {
-                return $this->redirect('/login?error=banned');
+                return $this->redirect('/login/mahasiswa?error=banned');
             }
-            return $this->redirect('/login?error=invalid');
+            return $this->redirect('/login/mahasiswa?error=invalid');
         }
 
         Auth::loginMahasiswa($result['user']);

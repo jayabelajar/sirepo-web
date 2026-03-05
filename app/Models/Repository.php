@@ -704,8 +704,31 @@ class Repository extends Model
 
     public function getAllSlugs(): array
     {
-        $sql = "SELECT slug, updated_at FROM {$this->table} ORDER BY updated_at DESC";
-        return $this->query($sql)->fetchAll();
+        $params = [];
+        $where = $this->buildPublicWhere([], $params) . " AND r.slug IS NOT NULL AND r.slug <> ''";
+
+        // Be tolerant across schema versions: some installations don't have updated_at.
+        $lastmodColumn = null;
+        if ($this->hasColumn('updated_at')) {
+            $lastmodColumn = 'updated_at';
+        } elseif ($this->hasColumn('created_at')) {
+            $lastmodColumn = 'created_at';
+        }
+
+        $select = 'r.slug';
+        $orderBy = 'r.slug ASC';
+
+        if ($lastmodColumn !== null) {
+            $select .= ", r.{$lastmodColumn} AS lastmod_at";
+            $orderBy = "r.{$lastmodColumn} DESC";
+        }
+
+        $sql = "SELECT {$select}
+                FROM {$this->table} r
+                {$where}
+                ORDER BY {$orderBy}";
+
+        return $this->query($sql, $params)->fetchAll();
     }
 
     private function buildPublicWhere(array $filters, array &$params): string

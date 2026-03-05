@@ -43,8 +43,14 @@ class SitemapController extends Controller
         }
 
         foreach ($slugs as $row) {
-            $loc = $base . '/repository/' . rawurlencode($row['slug'] ?? '');
-            $lastmod = !empty($row['updated_at']) ? date('c', strtotime($row['updated_at'])) : null;
+            $slug = trim((string)($row['slug'] ?? ''));
+            if ($slug === '') {
+                continue;
+            }
+
+            $loc = $base . '/repository/' . rawurlencode($slug);
+            $lastmodSource = $row['lastmod_at'] ?? null;
+            $lastmod = !empty($lastmodSource) ? date('c', strtotime((string)$lastmodSource)) : null;
             $urls[] = ['loc' => $loc, 'lastmod' => $lastmod];
         }
 

@@ -19,6 +19,7 @@ use App\Controllers\Public\{
 use App\Controllers\Auth\AuthMahasiswaController;
 use App\Controllers\Auth\AuthDosenController;
 use App\Controllers\Auth\AuthAdminController;
+use App\Controllers\Auth\ForgotPasswordController;
 
 /* DASHBOARD MAHASISWA */
 use App\Controllers\Mahasiswa\DashboardController as MahasiswaDashboard;
@@ -66,6 +67,11 @@ $settingModel = new Setting();
 $setting = $settingModel->get();
 $isMaintenance = !empty($setting['maintenance_mode']);
 $config = require __DIR__ . '/config.php';
+$redirectTo = static function (string $targetPath) use ($config): void {
+    $base = rtrim($config['base_url'] ?? '', '/');
+    header('Location: ' . $base . '/' . ltrim($targetPath, '/'));
+    exit;
+};
 $basePath = rtrim(parse_url($config['base_url'] ?? '', PHP_URL_PATH) ?? '', '/');
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 if ($basePath !== '' && strpos($requestPath, $basePath) === 0) {
@@ -76,6 +82,9 @@ if ($basePath !== '' && strpos($requestPath, $basePath) === 0) {
 $isAdminPath = strpos($requestPath, '/admin') === 0
     || strpos($requestPath, '/__admin') === 0
     || strpos($requestPath, '/__dosen') === 0
+    || strpos($requestPath, '/login/admin') === 0
+    || strpos($requestPath, '/login/dosen') === 0
+    || strpos($requestPath, '/lupa-password/dosen') === 0
     || strpos($requestPath, '/api') === 0;
 
 if ($isMaintenance && !$isAdminPath && strpos($requestPath, '/maintenance') !== 0) {
@@ -117,28 +126,54 @@ $router->get('/telusuri/jenis-karya/{jenis}',    [TelusuriController::class, 'je
 $router->get('/repository/{slug}',               [RepositoryController::class, 'detail']);
 $router->get('/repository/{slug}/download',      [FileDownloadController::class, 'repository']);
 $router->get('/sitemap.xml',                     [SitemapController::class, 'index']);
+$router->get('/sitemap.xml/',                    [SitemapController::class, 'index']);
 
 
 /* ============================================================
    AUTH MAHASISWA
 ============================================================ */
-$router->get('/login',              [AuthMahasiswaController::class, 'showLoginForm']);
-$router->post('/login',             [AuthMahasiswaController::class, 'login']);
-$router->post('/logout',            [AuthMahasiswaController::class, 'logout']);
+$router->get('/login/mahasiswa',     [AuthMahasiswaController::class, 'showLoginForm']);
+$router->post('/login/mahasiswa',    [AuthMahasiswaController::class, 'login']);
+$router->get('/login', static function () use ($redirectTo): void {
+    $redirectTo('/login/mahasiswa');
+});
+$router->post('/login',              [AuthMahasiswaController::class, 'login']); // backward compatibility
+$router->post('/logout',             [AuthMahasiswaController::class, 'logout']);
 
 
 /* ============================================================
    AUTH DOSEN
 ============================================================ */
-$router->get('/__dosen/login',     [AuthDosenController::class, 'showLoginForm']);
-$router->post('/__dosen/login',    [AuthDosenController::class, 'login']);
+$router->get('/login/dosen',         [AuthDosenController::class, 'showLoginForm']);
+$router->post('/login/dosen',        [AuthDosenController::class, 'login']);
+$router->get('/__dosen/login', static function () use ($redirectTo): void {
+    $redirectTo('/login/dosen');
+});
+$router->post('/__dosen/login',      [AuthDosenController::class, 'login']); // backward compatibility
 
 
 /* ============================================================
    AUTH ADMIN
 ============================================================ */
-$router->get('/__admin/login',     [AuthAdminController::class, 'showLoginForm']);
-$router->post('/__admin/login',    [AuthAdminController::class, 'login']);
+$router->get('/login/admin',         [AuthAdminController::class, 'showLoginForm']);
+$router->post('/login/admin',        [AuthAdminController::class, 'login']);
+$router->get('/__admin/login', static function () use ($redirectTo): void {
+    $redirectTo('/login/admin');
+});
+$router->post('/__admin/login',      [AuthAdminController::class, 'login']); // backward compatibility
+
+/* ============================================================
+   LUPA PASSWORD (MAHASISWA & DOSEN)
+============================================================ */
+$router->get('/lupa-password', static function () use ($redirectTo): void {
+    $redirectTo('/lupa-password/mahasiswa');
+});
+$router->get('/lupa-password/mahasiswa', [ForgotPasswordController::class, 'showMahasiswaForm']);
+$router->post('/lupa-password/mahasiswa', [ForgotPasswordController::class, 'submitMahasiswa']);
+$router->get('/lupa-password/dosen', [ForgotPasswordController::class, 'showDosenForm']);
+$router->post('/lupa-password/dosen', [ForgotPasswordController::class, 'submitDosen']);
+$router->get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm']);
+$router->post('/reset-password/{token}', [ForgotPasswordController::class, 'submitReset']);
 
 
 /* ============================================================

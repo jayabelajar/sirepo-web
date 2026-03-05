@@ -4,25 +4,25 @@
     <div class="grid md:grid-cols-2 gap-12 items-center">
         
         <div class="space-y-4">
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
-                Sistem Informasi Repository Institut Agama Islam Hasan Jufri
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl xl:text-[2.6rem] font-bold text-slate-900 leading-snug sm:leading-tight max-w-3xl">
+                Sistem Informasi Repositori <br class="hidden sm:block">Institut Agama Islam Hasan Jufri
             </h1>
 
-            <p class="text-slate-600 text-base sm:text-lg">
-                Temukan koleksi lengkap penelitian, skripsi, dan sumber akademik lainnya dalam platform repository digital yang terstruktur dan mudah diakses.
+            <p class="text-slate-600 text-sm sm:text-base lg:text-lg max-w-2xl">
+                Akses publikasi ilmiah kampus secara terstruktur untuk kebutuhan pembelajaran, riset, dan rujukan akademik.
             </p>
 
             <div class="pt-4 flex flex-wrap gap-3">
                 <a href="<?= $base ?>/telusuri/"
                    class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    Telusuri Koleksi
+                    Telusuri Repositori
                 </a>
 
                 <a href="<?= $base ?>/download"
                    class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-slate-300 text-sm text-slate-700 font-semibold hover:bg-slate-100 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    Download App
+                    Unduh Aplikasi
                 </a>
             </div>
         </div>
@@ -38,8 +38,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-semibold text-slate-800">5 Publikasi Terbaru</p>
-                        <p class="text-xs text-slate-500">Cuplikan karya ilmiah yang baru diunggah</p>
+                        <p class="text-sm font-semibold text-slate-800">Publikasi Terbaru</p>
+                        <p class="text-xs text-slate-500">Ringkasan dokumen yang baru dipublikasikan</p>
                     </div>
                 </div>
 
@@ -67,28 +67,48 @@
 
 <!-- ✅ DIUBAH: pb-16/sm:pb-20 -> pb-8/sm:pb-10 + tambah deskripsi -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-10">
-    <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 border-l-4 border-emerald-500 pl-3">Telusuri Berdasarkan Kategori</h2>
+    <style>
+        @media (max-width: 639px) {
+            .category-slider {
+                display: flex;
+                gap: 0.875rem;
+                overflow-x: auto;
+                padding: 0 0.25rem 0.5rem;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .category-slider::-webkit-scrollbar {
+                display: none;
+            }
+            .category-slider-card {
+                min-width: 78%;
+                scroll-snap-align: start;
+            }
+        }
+    </style>
+    <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 border-l-4 border-emerald-500 pl-3">Kategori Repositori</h2>
     <p class="text-sm text-slate-500 mt-1 pl-3 mb-6">
-        Pilih kategori untuk mempercepat pencarian repository sesuai kebutuhan Anda.
+        Pilih kategori untuk mempersempit penelusuran dokumen ilmiah.
     </p>
 
-    <div class="flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5 text-sm">
+    <div class="category-slider sm:grid sm:grid-cols-3 lg:grid-cols-5 sm:gap-4 lg:gap-5 text-sm">
 
         <a href="<?= $base ?>/telusuri/year"
-           class="flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+           class="category-slider-card flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3M16 7V3M4 11h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1z" />
                 </svg>
             </div>
             <div class="text-left sm:text-center">
-                <p class="font-semibold text-slate-800 mt-0 sm:mt-1">By Tahun</p>
-                <p class="text-xs text-slate-500 hidden sm:block">Pengelompokan waktu</p>
+                <p class="font-semibold text-slate-800 mt-0 sm:mt-1">Per Tahun</p>
+                <p class="text-xs text-slate-500 hidden sm:block">Berdasarkan tahun terbit</p>
             </div>
         </a>
 
         <a href="<?= $base ?>/telusuri/program-studi"
-           class="flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+           class="category-slider-card flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4z" />
@@ -97,12 +117,12 @@
             </div>
             <div class="text-left sm:text-center">
                 <p class="font-semibold text-slate-800 mt-0 sm:mt-1">Program Studi</p>
-                <p class="text-xs text-slate-500 hidden sm:block">Filter berdasarkan jurusan</p>
+                <p class="text-xs text-slate-500 hidden sm:block">Berdasarkan program studi</p>
             </div>
         </a>
 
         <a href="<?= $base ?>/telusuri/mata-kuliah"
-           class="flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+           class="category-slider-card flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4H4z" /><path stroke-linecap="round" stroke-linejoin="round" d="M10 8v12" /><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16v8H4z" />
@@ -110,12 +130,12 @@
             </div>
             <div class="text-left sm:text-center">
                 <p class="font-semibold text-slate-800 mt-0 sm:mt-1">Mata Kuliah</p>
-                <p class="text-xs text-slate-500 hidden sm:block">Topik akademik terkait</p>
+                <p class="text-xs text-slate-500 hidden sm:block">Berdasarkan mata kuliah</p>
             </div>
         </a>
 
         <a href="<?= $base ?>/telusuri/jenis-karya"
-           class="flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+           class="category-slider-card flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v4H5z" /><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14v8H5z" />
@@ -123,12 +143,12 @@
             </div>
             <div class="text-left sm:text-center">
                 <p class="font-semibold text-slate-800 mt-0 sm:mt-1">Jenis Karya</p>
-                <p class="text-xs text-slate-500 hidden sm:block">Skripsi, Jurnal, Laporan, dll.</p>
+                <p class="text-xs text-slate-500 hidden sm:block">Jenis dokumen ilmiah</p>
             </div>
         </a>
 
         <a href="<?= $base ?>/telusuri/author"
-           class="flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
+           class="category-slider-card flex items-center sm:flex-col justify-start sm:justify-center gap-4 sm:gap-2 rounded-xl bg-white border border-slate-200 p-4 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all">
             <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="8" r="3" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 20c0-3 2.5-5 6-5s6 2 6 5"></path>
@@ -136,7 +156,7 @@
             </div>
             <div class="text-left sm:text-center">
                 <p class="font-semibold text-slate-800 mt-0 sm:mt-1">Penulis</p>
-                <p class="text-xs text-slate-500 hidden sm:block">Berdasarkan nama penulis</p>
+                <p class="text-xs text-slate-500 hidden sm:block">Berdasarkan penulis</p>
             </div>
         </a>
 
@@ -149,12 +169,12 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 border-l-4 border-emerald-500 pl-3">Publikasi Terbaru</h2>
-            <p class="text-sm text-slate-500 mt-1 pl-3">Karya ilmiah yang baru diarsipkan dan diverifikasi.</p>
+            <p class="text-sm text-slate-500 mt-1 pl-3">Dokumen ilmiah yang baru diarsipkan pada repositori.</p>
         </div>
 
         <a href="<?= $base ?>/telusuri/"
            class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700 hover:text-emerald-800 hover:underline flex-shrink-0">
-            Lihat Semua Repository &raquo;
+            Lihat Semua Repositori &raquo;
         </a>
     </div>
 
@@ -192,7 +212,7 @@
 
                     <a href="<?= $base ?>/repository/<?= e($item['slug']) ?>"
                        class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700 hover:underline">
-                        Lihat Detail &raquo;
+                        Detail Dokumen &raquo;
                     </a>
                 </div>
 
@@ -207,10 +227,10 @@
 
         <div class="lg:max-w-lg">
             <h3 class="text-2xl sm:text-3xl font-semibold leading-snug">
-                Akses Repository Kapan Saja, Di Mana Saja.
+                Akses Repositori Akademik Secara Fleksibel
             </h3>
             <p class="mt-2 text-sm text-slate-300">
-                Mulai telusuri kekayaan intelektual kampus Anda sekarang.
+                Gunakan repositori sebagai rujukan resmi karya ilmiah institusi.
             </p>
         </div>
 
@@ -218,18 +238,19 @@
             <a href="<?= $base ?>/telusuri/"
                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 text-sm font-semibold hover:bg-emerald-400 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                Telusuri Repository
+                Telusuri Repositori
             </a>
 
             <a href="<?= $base ?>/download"
                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-slate-600 text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                Download App
+                Unduh Aplikasi
                 </a>
         </div>
 
     </div>
 </section>
+
 
 
 

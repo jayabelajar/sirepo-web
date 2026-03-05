@@ -14,7 +14,7 @@ class HomeController extends Controller
 
         $seo = [
             'title'       => 'Sistem Informasi Repository Institut Agama Islam Hasan Jufri',
-            'description' => 'Platform repository karya ilmiah modern, terverifikasi, dan terpusat di Institut Agama Islam Hasan Jufri.'
+            'description' => 'Repositori akademik resmi Institut Agama Islam Hasan Jufri untuk publikasi dan rujukan ilmiah.'
         ];
 
         $this->view('public/home', compact('seo', 'latest'));

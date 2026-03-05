@@ -21,7 +21,7 @@ class AuthAdminController extends Controller
             return $this->redirect('/admin/dashboard');
         }
 
-        $this->view('auth/login-admin', [
+        return $this->view('auth/login-admin', [
             'page_title' => 'Login Admin',
         ], 'auth');
     }
@@ -29,11 +29,11 @@ class AuthAdminController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/__admin/login');
+            return $this->redirect('/login/admin');
         }
 
         if (!Csrf::check($_POST['csrf_token'] ?? null)) {
-            $this->redirect('/__admin/login?error=csrf');
+            return $this->redirect('/login/admin?error=csrf');
         }
 
         $usernameOrEmail = trim($_POST['email'] ?? '');
@@ -43,12 +43,12 @@ class AuthAdminController extends Controller
         if (!$result['success']) {
             $reason = $result['reason'] ?? 'invalid';
             if ($reason === 'throttled') {
-                $this->redirect('/__admin/login?error=throttled');
+                return $this->redirect('/login/admin?error=throttled');
             }
             if ($reason === 'banned') {
-                $this->redirect('/__admin/login?error=banned');
+                return $this->redirect('/login/admin?error=banned');
             }
-            $this->redirect('/__admin/login?error=invalid');
+            return $this->redirect('/login/admin?error=invalid');
         }
 
         Auth::loginAdmin($result['user']);
@@ -66,6 +66,6 @@ class AuthAdminController extends Controller
         );
 
         // Arahkan ke dashboard admin
-        $this->redirect('/admin/dashboard');
+        return $this->redirect('/admin/dashboard');
     }
 }

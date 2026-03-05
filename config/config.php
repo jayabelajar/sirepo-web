@@ -39,23 +39,34 @@ $dynamicBase = ($httpHost ? $scheme . '://' . $httpHost : 'http://localhost') . 
 
 $envAppEnv = $env('APP_ENV', 'local');
 $isLocalHost = $httpHost && (str_contains($httpHost, 'localhost') || str_contains($httpHost, '127.0.0.1') || $envAppEnv === 'local');
-$defaultBase = $dynamicBase ?: 'https://sirepo-inhafi.com';
+$defaultBase = $dynamicBase ?: 'http://localhost';
 
 return [
     // Branding utama situs
-    'app_name'      => $env('APP_NAME', 'Sistem Informasi Repository Institut Agama Islam Hasan Jufri'),
+    'app_name'      => $env('APP_NAME', 'Sistem Informasi Repository'),
     // Pakai host/path yang sedang diakses; jika tidak ada (CLI), pakai APP_BASE_URL atau default.
     'base_url'      => rtrim((string) ($dynamicBase ?: $env('APP_BASE_URL', $defaultBase)), '/'),
-    // Jika env tidak diset, fallback ke nilai default berikut (disarankan tetap set APP_API_SECRET di env)
-    'api_secret'    => $env('APP_API_SECRET', 'QZboOI2D9K0m9rwTXutXkPs9olhhGDXDT7Ota4A6h4c='),
+    // Gunakan env dan kosongkan default agar kredensial tidak tersimpan di kode publik
+    'api_secret'    => $env('APP_API_SECRET', ''),
     'environment'   => $env('APP_ENV', 'production'),
     'database'      => [
         'host'    => $env('DB_HOST', 'localhost'),
         'port'    => (int) $env('DB_PORT', 3306),
-        'name'    => $env('DB_NAME', 'u804549048_sirepo'),
-        'user'    => $env('DB_USER', 'u804549048_sirepo'),
-        'pass'    => $env('DB_PASS', 'Jayanux#2026'),
+        'name'    => $env('DB_NAME', 'sirepo'),
+        'user'    => $env('DB_USER', 'sirepo'),
+        'pass'    => $env('DB_PASS', ''),
         'charset' => $env('DB_CHARSET', 'utf8mb4'),
+    ],
+
+    'mail' => [
+        'host'         => $env('MAIL_HOST', 'smtp.gmail.com'),
+        'port'         => (int) $env('MAIL_PORT', 465),
+        'username'     => $env('MAIL_USERNAME', ''),
+        'password'     => $env('MAIL_PASSWORD', ''),
+        'encryption'   => strtolower((string) $env('MAIL_ENCRYPTION', 'ssl')), // ssl | tls
+        'from_address' => $env('MAIL_FROM_ADDRESS', $env('MAIL_USERNAME', '')),
+        'from_name'    => $env('MAIL_FROM_NAME', $env('APP_NAME', 'SIREPO')),
+        'timeout'      => (int) $env('MAIL_TIMEOUT', 15),
     ],
 
     // Maintenance mode (kalau true, semua public diarahkan ke maintenance.php)

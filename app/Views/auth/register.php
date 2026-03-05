@@ -183,7 +183,7 @@ $errors = [
             <span class="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Sudah punya akun?</span>
         </div>
-        <a href="<?= $base ?>/login" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Masuk ke dashboard</a>
+        <a href="<?= $base ?>/login/mahasiswa" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Masuk ke dashboard</a>
     </div>
 </div>
 

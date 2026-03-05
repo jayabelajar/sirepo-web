@@ -6,9 +6,24 @@ yarn-error.log*
 pnpm-debug.log*
 bun.lockb
 
+# Environment & credentials
+.env
+api/.env
+
+# Logs & runtime files
+storage/logs/
+storage/uploads/
+public/assets/uploads/
+*.log
+tmp/
+
 # Temporary patch scripts
 tmp_patch*.py
 tmp_patch*.php
+
+# OS junk files
+.DS_Store
+Thumbs.db
 
 # Database dumps
 *.sql
