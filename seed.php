@@ -1,8 +1,15 @@
 <?php
 /**
- * Seeder sederhana untuk membuat akun admin, dosen, dan mahasiswa.
+ * Seeder sederhana untuk membuat akun admin, dosen, mahasiswa dan data pendukung repositori.
  * Jalankan dari root project: php seed.php
  */
+
+function slugify(string $text): string
+{
+    $text = strtolower(trim($text));
+    $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
+    return trim($text, '-') ?: 'judul-' . uniqid();
+}
 
 // === Muat ENV agar koneksi mengikuti konfigurasi aplikasi ===
 $envFile = __DIR__ . '/.env';
@@ -108,3 +115,170 @@ foreach ($accounts as $account) {
 }
 
 echo PHP_EOL . "Seeder selesai. Inserted={$inserted}, Skipped={$skipped}" . PHP_EOL;
+echo str_repeat('-', 60) . PHP_EOL;
+
+// === Seed Program Studi ===
+$studyPrograms = [
+    'Teknik Informatika',
+    'Pendidikan Agama Islam',
+    'Ekonomi Syariah',
+    'Hukum Keluarga Islam',
+];
+
+$programStmt = $pdo->prepare('SELECT id FROM program_studi WHERE nama_program_studi = :nama LIMIT 1');
+$programInsert = $pdo->prepare('INSERT INTO program_studi (nama_program_studi) VALUES (:nama)');
+$programIds = [];
+$psInserted = 0;
+
+foreach ($studyPrograms as $program) {
+    $programStmt->execute([':nama' => $program]);
+    $id = $programStmt->fetchColumn();
+    if (!$id) {
+        $programInsert->execute([':nama' => $program]);
+        $id = $pdo->lastInsertId();
+        $psInserted++;
+        echo "[OK] Tambah Program Studi {$program}" . PHP_EOL;
+    } else {
+        echo "[SKIP] Program Studi {$program}" . PHP_EOL;
+    }
+    $programIds[$program] = (int) $id;
+}
+
+echo "Program Studi: Inserted={$psInserted}, Total=" . count($programIds) . PHP_EOL;
+echo str_repeat('-', 60) . PHP_EOL;
+
+// === Seed Mata Kuliah ===
+$subjectMap = [
+    'Teknik Informatika' => [
+        'Kecerdasan Buatan',
+        'Basis Data Lanjut',
+        'Pengembangan Web',
+    ],
+    'Pendidikan Agama Islam' => [
+        'Metodologi Pendidikan Islam',
+        'Psikologi Pendidikan',
+    ],
+    'Ekonomi Syariah' => [
+        'Manajemen Zakat dan Wakaf',
+        'Akuntansi Syariah',
+    ],
+    'Hukum Keluarga Islam' => [
+        'Fiqh Munakahat',
+        'Hukum Waris Islam',
+    ],
+];
+
+$subjectStmt = $pdo->prepare('SELECT id FROM mata_kuliah WHERE nama = :nama LIMIT 1');
+$subjectInsert = $pdo->prepare('INSERT INTO mata_kuliah (nama) VALUES (:nama)');
+$subjectIds = [];
+$mkInserted = 0;
+
+foreach ($subjectMap as $subjects) {
+    foreach ($subjects as $subject) {
+        if (isset($subjectIds[$subject])) continue;
+        $subjectStmt->execute([':nama' => $subject]);
+        $id = $subjectStmt->fetchColumn();
+        if (!$id) {
+            $subjectInsert->execute([':nama' => $subject]);
+            $id = $pdo->lastInsertId();
+            $mkInserted++;
+            echo "[OK] Tambah Mata Kuliah {$subject}" . PHP_EOL;
+        } else {
+            echo "[SKIP] Mata Kuliah {$subject}" . PHP_EOL;
+        }
+        $subjectIds[$subject] = (int) $id;
+    }
+}
+
+echo "Mata Kuliah: Inserted={$mkInserted}, Total=" . count($subjectIds) . PHP_EOL;
+echo str_repeat('-', 60) . PHP_EOL;
+
+// === Seed Repositori Contoh ===
+$userStmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
+$uploadedBy = [
+    'admin' => null,
+    'dosen' => null,
+];
+foreach (['admin@gmail.com' => 'admin', 'dosen1@gmail.com' => 'dosen'] as $email => $key) {
+    $userStmt->execute([':email' => $email]);
+    $uploadedBy[$key] = (int) ($userStmt->fetchColumn() ?: 0);
+}
+
+$repoSamples = [
+    [
+        'judul'        => 'Penerapan Machine Learning untuk Klasifikasi Hadis',
+        'jenis_karya'  => 'Skripsi',
+        'author'       => 'Ahmad Fauzi',
+        'tahun'        => 2024,
+        'program'      => 'Teknik Informatika',
+        'mata_kuliah'  => 'Kecerdasan Buatan',
+        'abstrak'      => 'Penelitian ini membahas pemanfaatan machine learning untuk mengklasifikasikan hadis berdasarkan tema dan sumber.',
+        'keywords'     => ['machine learning', 'hadis', 'klasifikasi'],
+        'file'         => 'files/sample-ml-hadis.pdf',
+        'uploader'     => $uploadedBy['dosen'] ?: $uploadedBy['admin'],
+    ],
+    [
+        'judul'        => 'Strategi Pembelajaran Akhlak untuk Gen-Z di Pesantren',
+        'jenis_karya'  => 'Artikel Ilmiah',
+        'author'       => 'Nur Aini',
+        'tahun'        => 2023,
+        'program'      => 'Pendidikan Agama Islam',
+        'mata_kuliah'  => 'Metodologi Pendidikan Islam',
+        'abstrak'      => 'Artikel ini merangkum pendekatan pembelajaran akhlak bagi santri Generasi Z dengan memadukan metode tradisional dan digital.',
+        'keywords'     => ['pendidikan', 'akhlak', 'gen-z'],
+        'file'         => 'files/strategi-pembelajaran.pdf',
+        'uploader'     => $uploadedBy['admin'],
+    ],
+    [
+        'judul'        => 'Optimalisasi Manajemen Wakaf Produktif untuk Pemberdayaan Umat',
+        'jenis_karya'  => 'Tesis',
+        'author'       => 'Rahmat Hidayat',
+        'tahun'        => 2022,
+        'program'      => 'Ekonomi Syariah',
+        'mata_kuliah'  => 'Manajemen Zakat dan Wakaf',
+        'abstrak'      => 'Kajian ini meneliti model pengelolaan wakaf produktif guna meningkatkan kemandirian ekonomi masyarakat.',
+        'keywords'     => ['wakaf', 'ekonomi syariah', 'pemberdayaan'],
+        'file'         => 'files/wakaf-produktif.pdf',
+        'uploader'     => $uploadedBy['dosen'] ?: $uploadedBy['admin'],
+    ],
+];
+
+$repoCheck = $pdo->prepare('SELECT id FROM repository WHERE slug = :slug LIMIT 1');
+$repoInsert = $pdo->prepare("
+    INSERT INTO repository
+        (judul, slug, jenis_karya, author, tahun, program_studi_id, mata_kuliah_id, abstrak, file_pdf, uploaded_by, keywords)
+    VALUES
+        (:judul, :slug, :jenis_karya, :author, :tahun, :program_studi_id, :mata_kuliah_id, :abstrak, :file_pdf, :uploaded_by, :keywords)
+");
+
+$repoInserted = 0;
+foreach ($repoSamples as $repo) {
+    $slug = slugify($repo['judul']);
+    $repoCheck->execute([':slug' => $slug]);
+    if ($repoCheck->fetchColumn()) {
+        echo "[SKIP] Repository {$repo['judul']}" . PHP_EOL;
+        continue;
+    }
+
+    $psId = $programIds[$repo['program']] ?? null;
+    $mkId = $subjectIds[$repo['mata_kuliah']] ?? null;
+
+    $repoInsert->execute([
+        ':judul'            => $repo['judul'],
+        ':slug'             => $slug,
+        ':jenis_karya'      => $repo['jenis_karya'],
+        ':author'           => $repo['author'],
+        ':tahun'            => $repo['tahun'],
+        ':program_studi_id' => $psId,
+        ':mata_kuliah_id'   => $mkId,
+        ':abstrak'          => $repo['abstrak'],
+        ':file_pdf'         => $repo['file'],
+        ':uploaded_by'      => $repo['uploader'] ?: $uploadedBy['admin'],
+        ':keywords'         => implode(',', $repo['keywords']),
+    ]);
+
+    echo "[OK] Tambah Repository {$repo['judul']}" . PHP_EOL;
+    $repoInserted++;
+}
+
+echo "Repository Contoh: Inserted={$repoInserted}" . PHP_EOL;
