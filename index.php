@@ -40,6 +40,11 @@ spl_autoload_register(function ($class) {
 // LOAD ROUTES (ROOT)
 require_once __DIR__ . '/config/routes.php';
 
+// Helpers global
+if (file_exists(__DIR__ . '/app/Core/helpers.php')) {
+    require_once __DIR__ . '/app/Core/helpers.php';
+}
+
 // RUN APP
 $app = new App();
 $app->run();

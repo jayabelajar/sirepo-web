@@ -1,2 +1,19 @@
 [DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1045] Access denied for user 'sirepo'@'localhost' (using password: NO)
 [DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1045] Access denied for user 'sirepo'@'localhost' (using password: NO)
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepo user=sirepo dsn=mysql:host=localhost;port=3306;dbname=sirepo;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded

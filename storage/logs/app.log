@@ -22,3 +22,99 @@ Trace: #0 D:\Project\sirepo-v1\app\Core\Model.php(18): PDO->prepare('SELECT slug
 #8 Standard input code(8): include('D:\\Project\\sire...')
 #9 {main}
 
+[2026-03-05 06:04:28] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:34] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:40] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:58] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:59] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:59] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:59] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-03-05 06:04:59] Cannot access private constant App\Controllers\Auth\ForgotPasswordController::TOKEN_TTL_MINUTES in C:\Users\Argeswara\Documents\Project\sirepov1\app\Views\auth\forgot-password.php:55
+Request: GET /lupa-password/mahasiswa
+Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(47): require()
+#1 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(95): App\Core\Controller->view('auth/forgot-pas...', Array, 'auth')
+#2 C:\Users\Argeswara\Documents\Project\sirepov1\app\Controllers\Auth\ForgotPasswordController.php(18): App\Controllers\Auth\ForgotPasswordController->showRequestForm('mahasiswa')
+#3 [internal function]: App\Controllers\Auth\ForgotPasswordController->showMahasiswaForm()
+#4 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(140): call_user_func_array(Array, Array)
+#5 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/lupa-password/...')
+#7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+

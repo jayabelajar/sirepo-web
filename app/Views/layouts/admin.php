@@ -25,6 +25,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="<?= $base_url; ?>/assets/img/inhafi.png">
+    <link rel="icon" type="image/svg+xml" href="<?= $base_url; ?>/assets/img/favicon.svg">
+    <link rel="alternate icon" href="<?= $base_url; ?>/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="<?= $base_url; ?>/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="<?= $base_url; ?>/manifest.webmanifest">
 
     <?php
       $cssPath = __DIR__ . '/../../../public/assets/css/tailwind.css';
@@ -134,10 +139,8 @@
             
             <div id="brandWrapper" class="flex items-center gap-3 w-full transition-all duration-300 origin-left">
                 
-                <div class="relative flex-shrink-0 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 transition-all duration-300">
-                    <div class="w-full h-full rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base md:text-lg shadow-lg shadow-emerald-200">
-                        <?= strtoupper(substr($admin['nama'] ?? 'A', 0, 1)) ?>
-                    </div>
+                <div class="w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
+                    <img src="<?= $base_url; ?>/assets/img/image.png" alt="Logo Admin" class="w-full h-full object-contain">
                 </div>
 
                 <div id="brandText" class="sidebar-text opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden flex-1 min-w-0">

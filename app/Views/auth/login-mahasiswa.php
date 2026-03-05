@@ -42,6 +42,10 @@ $errorMessages = [
         <svg id="iconMoon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12.41A8 8 0 1111.59 4 6 6 0 0020 12.41z"/></svg>
     </button>
 
+    <div class="flex justify-center">
+        <img src="<?= $base; ?>/assets/img/image.png" alt="Ilustrasi Login Mahasiswa" class="w-32 sm:w-40 drop-shadow-xl mb-3">
+    </div>
+
     <div class="text-center space-y-2">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Login Mahasiswa</h1>
         <p class="text-sm text-gray-500">Masuk untuk mengakses dashboard, koleksi repositori, dan fitur bookmark.</p>
