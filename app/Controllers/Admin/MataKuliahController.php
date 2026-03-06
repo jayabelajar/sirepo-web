@@ -66,23 +66,25 @@ class MataKuliahController extends Controller
     {
         Auth::checkAdmin();
         Sanitizer::cleanRequest();
+        $redirectBase = '/admin/mata-kuliah';
+        $saveAndNew = !empty($_POST['save_and_new']);
 
         if (!Csrf::check($_POST['csrf_token'] ?? '')) {
             $_SESSION['flash_error'] = 'Sesi kadaluarsa.';
-            return $this->redirect('/admin/mata-kuliah');
+            return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
         }
 
         $nama = trim($_POST['nama'] ?? '');
         if ($nama === '') {
             $_SESSION['flash_error'] = 'Nama mata kuliah wajib diisi.';
-            return $this->redirect('/admin/mata-kuliah');
+            return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
         }
 
         $mkModel = new MataKuliah();
         $mkModel->create($nama);
         ActivityLogger::log($_SESSION['admin']['id'] ?? null, 'create_mk', 'mata_kuliah', null, 'Menambah mata kuliah: ' . $nama);
         $_SESSION['flash_success'] = 'Mata kuliah ditambahkan.';
-        return $this->redirect('/admin/mata-kuliah');
+        return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
     }
 
     public function update($id)

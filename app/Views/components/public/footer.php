@@ -5,17 +5,14 @@
 <footer class="mt-12 bg-slate-950 text-slate-300 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <section class="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col h-full">
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <div class="absolute inset-0 blur-lg bg-emerald-400/40 rounded-full"></div>
-                        <div class="relative w-12 h-12 rounded-2xl bg-white border border-emerald-100 flex items-center justify-center shadow-sm shadow-emerald-100 overflow-hidden">
-                            <img src="<?= $baseHref; ?>/assets/img/image.png" alt="Logo Sistem Informasi Repository" class="w-10 h-10 object-contain" />
-                        </div>
+            <section class="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6 flex flex-col h-full">
+                <div class="flex items-start sm:items-center gap-2.5 sm:gap-4">
+                    <div class="w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 flex-shrink-0 flex items-center justify-center">
+                        <img src="<?= $baseHref; ?>/assets/img/favicon.svg" alt="Logo Sistem Informasi Repository" class="w-full h-full object-contain" />
                     </div>
-                    <div class="leading-tight">
-                        <p class="text-base font-semibold tracking-wide text-white">SIREPO INHAFI</p>
-                        <p class="text-xs uppercase tracking-[0.3em] text-emerald-200/70">Institut Agama Islam Hasan Jufri</p>
+                    <div class="min-w-0 leading-tight">
+                        <p class="text-xs sm:text-sm lg:text-base font-semibold tracking-wide text-white">SISTEM INFORMASI REPOSITORI</p>
+                        <p class="mt-0.5 text-[10px] sm:text-xs uppercase tracking-wide font-bold text-emerald-200/70 break-words">Institut Agama Islam Hasan Jufri</p>
                     </div>
                 </div>
                 <p class="text-sm leading-relaxed text-slate-400">
@@ -60,20 +57,20 @@
             <section class="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col h-full text-sm">
                 <div class="flex-0">
                     <p class="font-semibold text-white tracking-wide text-sm">Jam Layanan</p>
-                    <p class="mt-1 text-slate-400">Senin-Jumat · 08.00-16.00 WIB</p>
+                    <p class="mt-1 text-slate-400">Senin-Jumat &middot; 08.00-16.00 WIB</p>
                 </div>
                 <div class="flex-0">
                     <p class="font-semibold text-white tracking-wide text-sm mb-2">Ikuti pembaruan</p>
                     <div class="flex items-center gap-3">
                         <?php
                             $socials = [
-                                ['label' => 'LinkedIn', 'icon' => '<path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4zM8.5 8h3.8v2.2h.06c.53-1 1.82-2.2 3.75-2.2 4.01 0 4.75 2.64 4.75 6.07V24h-4v-7.75c0-1.85-.03-4.24-2.6-4.24-2.6 0-3 2.03-3 4.1V24h-4z"/>'],
-                                ['label' => 'YouTube', 'icon' => '<path d="M23.5 6.2s-.2-1.6-.8-2.3c-.8-.9-1.6-.9-2-.9-2.8-.2-7-.2-7-.2h-.1s-4.2 0-7 .2c-.4 0-1.2 0-2 .9-.6.7-.8 2.3-.8 2.3S4 8.1 4 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.8 2.3c.8.9 1.9.9 2.4 1 1.7.2 7.1.2 7.1.2s4.2 0 7-.2c.4 0 1.2 0 2-.9.6-.7.8-2.3.8-2.3s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.75 14.51V8.99l5.32 2.76-5.32 2.76z"/>'],
-                                ['label' => 'Instagram', 'icon' => '<path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3.5A5.5 5.5 0 1017.5 13 5.5 5.5 0 0012 7.5zm0 2A3.5 3.5 0 1115.5 13 3.5 3.5 0 0112 9.5zm6.25-2.75a1.25 1.25 0 10-1.25 1.25 1.25 1.25 0 001.25-1.25z"/>'],
+                                ['label' => 'Instagram', 'icon' => '<path d="M7 2.5h10A4.5 4.5 0 0121.5 7v10a4.5 4.5 0 01-4.5 4.5H7A4.5 4.5 0 012.5 17V7A4.5 4.5 0 017 2.5zm5 4.5a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm5.25-2.13a1.12 1.12 0 10-.01 2.25 1.12 1.12 0 00.01-2.25z"/>'],
+                                ['label' => 'Facebook', 'icon' => '<path d="M13.5 22v-7h2.4l.4-3h-2.8V10c0-.86.26-1.45 1.5-1.45H16V5.9c-.45-.06-1.4-.15-2.66-.15-2.63 0-4.34 1.6-4.34 4.55V12H6.5v3H9v7h4.5z"/>'],
+                                ['label' => 'YouTube', 'icon' => '<path d="M23 12c0-2.1-.2-3.6-.6-4.5a2.9 2.9 0 00-2-1.7C18.8 5.4 12 5.4 12 5.4s-6.8 0-8.4.4a2.9 2.9 0 00-2 1.7C1.2 8.4 1 9.9 1 12s.2 3.6.6 4.5a2.9 2.9 0 002 1.7c1.6.4 8.4.4 8.4.4s6.8 0 8.4-.4a2.9 2.9 0 002-1.7c.4-.9.6-2.4.6-4.5zm-13.1 3.8V8.2l6.1 3.8-6.1 3.8z"/>'],
                             ];
                         ?>
                         <?php foreach ($socials as $social): ?>
-                            <a class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-emerald-300 hover:text-emerald-300 transition-colors" href="#" aria-label="<?= e($social['label']); ?>">
+                            <a class="w-10 h-10 rounded-xl border border-white/15 bg-slate-900/60 flex items-center justify-center text-slate-200 hover:border-emerald-300 hover:bg-emerald-500/10 hover:text-emerald-300 transition-all duration-200 hover:-translate-y-0.5" href="#" aria-label="<?= e($social['label']); ?>">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><?= $social['icon']; ?></svg>
                             </a>
                         <?php endforeach; ?>
@@ -82,7 +79,7 @@
                 <div class="mt-auto">
                     <p class="font-semibold text-white tracking-wide text-sm mb-2">Butuh bantuan?</p>
                     <a href="<?= $baseHref; ?>/kontak" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-emerald-400/60 text-sm text-white hover:bg-emerald-500/10 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 4-6 4-6 0V6a6 6 0 1112 0v5c0 4-6 4-6 0zm0 8v-2" /></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6" /><path stroke-linecap="round" stroke-linejoin="round" d="M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                         Hubungi tim repository
                     </a>
                 </div>
@@ -94,7 +91,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-xs sm:text-sm text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
             <p class="text-center sm:text-left">
                 &copy; <?= date('Y'); ?>
-                <a href="https://inhafi.ac.id" target="_blank" rel="noopener noreferrer" class="font-medium text-white hover:text-emerald-300 transition-colors">
+                <a href="https://inhafi.ac.id" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:text-emerald-300 transition-colors">
                     Institut Agama Islam Hasan Jufri
                 </a>.
                 Seluruh hak cipta dilindungi.
@@ -105,7 +102,7 @@
                 <a href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-emerald-300 transition-colors">
                     VeritasDev
                 </a>
-                <span class="px-1 text-slate-500">•</span>
+                <span class="px-1 text-slate-500">&middot;</span>
                 <a href="https://polije.ac.id" target="_blank" rel="noopener noreferrer" class="text-white hover:text-emerald-300 transition-colors">
                     Politeknik Negeri Jember
                 </a>
@@ -113,3 +110,4 @@
         </div>
     </div>
 </footer>
+

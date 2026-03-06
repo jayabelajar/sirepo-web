@@ -71,8 +71,8 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v4H5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14v8H5z"/></svg>
         </div>
         <div class="min-w-0">
-          <p class="font-semibold text-slate-900">Jenis Karya</p>
-          <p class="text-xs text-slate-500">Kelompokkan dokumen berdasarkan jenis karya.</p>
+          <p class="font-semibold text-slate-900">Jenis Publikasi</p>
+          <p class="text-xs text-slate-500">Kelompokkan dokumen berdasarkan jenis publikasi.</p>
         </div>
       </a>
 

@@ -61,6 +61,50 @@ class Bookmark extends Model
         return $this->query($sql, ['uid' => $userId, 'limit' => $limit])->fetchAll();
     }
 
+    public function findByIdForUser(int $userId, int $bookmarkId): ?array
+    {
+        $sql = "SELECT b.id AS bookmark_id,
+                       b.created_at,
+                       r.id AS repository_id,
+                       r.judul, r.slug, r.author, r.tahun, r.jenis_karya,
+                       ps.nama_program_studi AS prodi,
+                       mk.nama AS mata_kuliah
+                FROM {$this->table} b
+                JOIN repository r ON r.id = b.repository_id
+                LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
+                LEFT JOIN mata_kuliah mk ON mk.id = r.mata_kuliah_id
+                WHERE b.user_id = :uid
+                  AND b.id = :bid
+                LIMIT 1";
+
+        return $this->fetch($sql, [
+            'uid' => $userId,
+            'bid' => $bookmarkId,
+        ]);
+    }
+
+    public function findByRepositoryForUser(int $userId, int $repositoryId): ?array
+    {
+        $sql = "SELECT b.id AS bookmark_id,
+                       b.created_at,
+                       r.id AS repository_id,
+                       r.judul, r.slug, r.author, r.tahun, r.jenis_karya,
+                       ps.nama_program_studi AS prodi,
+                       mk.nama AS mata_kuliah
+                FROM {$this->table} b
+                JOIN repository r ON r.id = b.repository_id
+                LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
+                LEFT JOIN mata_kuliah mk ON mk.id = r.mata_kuliah_id
+                WHERE b.user_id = :uid
+                  AND b.repository_id = :rid
+                LIMIT 1";
+
+        return $this->fetch($sql, [
+            'uid' => $userId,
+            'rid' => $repositoryId,
+        ]);
+    }
+
     public function countByUser(int $userId): int
     {
         return (int) $this->query(
@@ -92,6 +136,14 @@ class Bookmark extends Model
         return $this->execute(
             "DELETE FROM {$this->table} WHERE user_id = :uid AND repository_id = :rid",
             ['uid' => $userId, 'rid' => $repositoryId]
+        );
+    }
+
+    public function removeByBookmarkId(int $userId, int $bookmarkId): bool
+    {
+        return $this->execute(
+            "DELETE FROM {$this->table} WHERE user_id = :uid AND id = :bid",
+            ['uid' => $userId, 'bid' => $bookmarkId]
         );
     }
 

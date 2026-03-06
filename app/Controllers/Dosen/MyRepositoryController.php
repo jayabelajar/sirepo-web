@@ -211,6 +211,37 @@ class MyRepositoryController extends Controller
         return $this->redirect('/dosen/repository');
     }
 
+    private function resolvePrimaryAuthorName(string $fallback = ''): string
+    {
+        $authorIds = $_POST['author_ids'] ?? [];
+        if (!is_array($authorIds)) {
+            $authorIds = [$authorIds];
+        }
+
+        $authorIds = array_values(array_unique(array_filter(array_map('intval', $authorIds))));
+        if (!empty($authorIds)) {
+            $users = (new User())->getByIds($authorIds);
+            $usersById = [];
+            foreach ($users as $user) {
+                $usersById[(int)($user['id'] ?? 0)] = $user;
+            }
+
+            foreach ($authorIds as $authorId) {
+                $user = $usersById[$authorId] ?? null;
+                if (!$user) {
+                    continue;
+                }
+                $name = trim((string)($user['nama_lengkap'] ?? $user['username'] ?? ''));
+                if ($name !== '') {
+                    return $name;
+                }
+            }
+        }
+
+        $fromRequest = trim((string)($_POST['author'] ?? ''));
+        return $fromRequest !== '' ? $fromRequest : $fallback;
+    }
+
     private function collectRequest(?string $uploadedFile, array $dosen, ?string $currentFile = null): array
     {
         $jenisList = ['skripsi','tugas_akhir','jurnal','artikel','laporan','pkl','lainnya'];
@@ -226,7 +257,7 @@ class MyRepositoryController extends Controller
             'judul'            => trim($_POST['judul'] ?? ''),
             'slug'             => $slug,
             'jenis_karya'      => $jenis,
-            'author'           => trim($_POST['author'] ?? ($dosen['nama'] ?? '')),
+            'author'           => $this->resolvePrimaryAuthorName(trim((string)($dosen['nama'] ?? $dosen['nama_lengkap'] ?? ''))),
             'tahun'            => (int)($_POST['tahun'] ?? date('Y')),
             'program_studi_id' => $_POST['program_studi_id'] !== '' ? (int)$_POST['program_studi_id'] : null,
             'mata_kuliah_id'   => $_POST['mata_kuliah_id'] !== '' ? (int)$_POST['mata_kuliah_id'] : null,

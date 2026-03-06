@@ -23,10 +23,6 @@
     $ogImage    = $seo['image'] ?? ($basePublicUrl . '/assets/img/inhafi.png');
     $ogImageAlt = $seo['image_alt'] ?? $pageTitle;
 
-    $cssPath    = __DIR__ . '/../../../public/assets/css/tailwind.css';
-    $cssVersion = file_exists($cssPath) ? filemtime($cssPath) : time();
-    $cssHref    = $basePublicUrl . '/assets/css/tailwind.css?v=' . $cssVersion;
-
     $footerLinkGroups = [
         [
             'title' => 'Akses Cepat',
@@ -82,7 +78,6 @@
         'ogType'          => $ogType,
         'ogImage'         => $ogImage,
         'ogImageAlt'      => $ogImageAlt,
-        'cssHref'         => $cssHref,
     ];
 ?>
 <!DOCTYPE html>

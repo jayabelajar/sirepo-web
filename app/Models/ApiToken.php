@@ -10,16 +10,15 @@ class ApiToken extends Model
 
     public function createToken(int $userId, string $token, int $ttlSeconds): bool
     {
-        $expiredAt = date('Y-m-d H:i:s', time() + $ttlSeconds);
+        $ttlSeconds = max(1, (int) $ttlSeconds);
         $tokenHash = hash('sha256', $token);
 
         $sql = "INSERT INTO {$this->table} (user_id, token, expired_at)
-                VALUES (:uid, :token, :expired_at)";
+                VALUES (:uid, :token, DATE_ADD(NOW(), INTERVAL {$ttlSeconds} SECOND))";
 
         return $this->execute($sql, [
             'uid'        => $userId,
             'token'      => $tokenHash,
-            'expired_at' => $expiredAt,
         ]);
     }
 

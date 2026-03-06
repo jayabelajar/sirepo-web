@@ -18,7 +18,8 @@ class AuthAdminController extends Controller
             return $this->redirect('/dosen/dashboard');
         }
         if (isset($_SESSION['admin'])) {
-            return $this->redirect('/admin/dashboard');
+            $role = $_SESSION['admin']['role'] ?? 'admin';
+            return $this->redirect($role === 'developer' ? '/developer/dashboard' : '/admin/dashboard');
         }
 
         return $this->view('auth/login-admin', [

@@ -1,5 +1,3 @@
-<?php $repoThumb = $base_url . '/assets/img/repo-default.svg'; ?>
-
 <main class="bg-gradient-to-b from-white to-slate-50 min-h-screen">
   <div class="h-6 sm:h-8"></div>
 
@@ -47,19 +45,22 @@
           <?php foreach ($repositories as $item): ?>
             <article class="p-4 rounded-xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition-all text-xs sm:text-sm space-y-2">
               <div class="flex flex-wrap items-center gap-2 text-[11px]">
-                <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center gap-1">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3M16 7V3M4 11h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1z"/></svg>
-                  <?= e($item['tahun'] ?? '-') ?>
-                </span>
-                <?php if (!empty($item['prodi'])): ?>
-                  <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 truncate">
-                    <?= e($item['prodi']) ?>
+                <?php if (!empty($item['jenis_karya'])): ?>
+                  <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 font-medium flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h10M7 12h10M7 17h6" /><path stroke-linecap="round" stroke-linejoin="round" d="M5 3h14a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 012-2z" /></svg>
+                    <?= e(ucwords(str_replace('_', ' ', (string) $item['jenis_karya']))) ?>
                   </span>
                 <?php endif; ?>
-                <?php if (!empty($item['jenis_karya'])): ?>
-                  <span class="ml-auto px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 flex items-center gap-1">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>
-                    <?= e(str_replace('_',' ',$item['jenis_karya'])) ?>
+                <?php if (!empty($item['prodi'])): ?>
+                  <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium flex items-center gap-1 truncate max-w-full sm:max-w-[80%]">
+                    <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v6l9 4 9-4V7" /></svg>
+                    <span class="truncate"><?= e($item['prodi']) ?></span>
+                  </span>
+                <?php endif; ?>
+                <?php if (!empty($item['mata_kuliah'])): ?>
+                  <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-medium flex items-center gap-1 truncate max-w-full sm:max-w-[80%]">
+                    <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4H4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M10 8v12"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16v8H4z"/></svg>
+                    <span class="truncate"><?= e($item['mata_kuliah']) ?></span>
                   </span>
                 <?php endif; ?>
               </div>
@@ -72,16 +73,17 @@
 
               <p class="text-[11px] text-slate-600 line-clamp-3"><?= e($item['abstrak'] ?? '') ?></p>
 
-              <div class="flex items-center justify-between border-t border-slate-100 pt-2 mt-1">
-                <span class="text-[11px] text-slate-500 flex items-center gap-1 truncate">
-                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <div class="border-t border-slate-100 pt-2 mt-1 flex items-center justify-between gap-3 text-[11px] text-slate-500">
+                <span class="flex items-center gap-1 min-w-0 max-w-[72%]">
+                  <svg class="w-3.5 h-3.5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="8" r="3" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 20c0-3 2.5-5 6-5s6 2 6 5"></path>
                   </svg>
-                  <?= e($item['author'] ?? '-') ?>
+                  <span class="truncate"><?= e($item['author'] ?? '-') ?></span>
                 </span>
-                <?php if (!empty($item['mata_kuliah'])): ?>
-                  <span class="text-[11px] text-slate-500 truncate text-right"><?= e($item['mata_kuliah']) ?></span>
-                <?php endif; ?>
+                <span class="flex items-center gap-1 flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3M16 7V3M4 11h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1z"/></svg>
+                  <?= e($item['tahun'] ?? '-') ?>
+                </span>
               </div>
             </article>
           <?php endforeach; ?>

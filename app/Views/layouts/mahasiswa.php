@@ -30,11 +30,7 @@
     <link rel="apple-touch-icon" href="<?= $base_url; ?>/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="<?= $base_url; ?>/manifest.webmanifest">
 
-    <?php
-      $cssPath = __DIR__ . '/../../../public/assets/css/tailwind.css';
-      $cssVersion = file_exists($cssPath) ? filemtime($cssPath) : time();
-    ?>
-    <link rel="stylesheet" href="<?= $base_url ?>/assets/css/tailwind.css?v=<?= $cssVersion ?>">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }

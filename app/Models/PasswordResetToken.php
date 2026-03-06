@@ -15,7 +15,7 @@ class PasswordResetToken extends Model
         $role = $this->normalizeRole($role);
         $token = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token);
-        $expiresAt = date('Y-m-d H:i:s', time() + max(5, $ttlMinutes) * 60);
+        $ttlMinutes = max(5, (int) $ttlMinutes);
 
         $this->execute(
             "UPDATE {$this->table}
@@ -29,13 +29,12 @@ class PasswordResetToken extends Model
 
         $this->execute(
             "INSERT INTO {$this->table} (user_id, email, role, token_hash, expires_at, created_at)
-             VALUES (:user_id, :email, :role, :token_hash, :expires_at, NOW())",
+             VALUES (:user_id, :email, :role, :token_hash, DATE_ADD(NOW(), INTERVAL {$ttlMinutes} MINUTE), NOW())",
             [
                 'user_id' => $userId,
                 'email' => strtolower(trim($email)),
                 'role' => $role,
                 'token_hash' => $tokenHash,
-                'expires_at' => $expiresAt,
             ]
         );
 

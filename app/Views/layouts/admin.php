@@ -5,20 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <?php
         $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
-        $prefixMap = [
-            '/admin/dashboard' => 'Dashboard Admin',
-            '/admin/repository' => 'Repository',
-            '/admin/mata-kuliah' => 'Mata Kuliah',
-            '/admin/program-studi' => 'Program Studi',
-            '/admin/users' => 'Pengguna',
-            '/admin/logs' => 'Log Aktivitas',
-            '/admin/settings' => 'Pengaturan',
-        ];
+        $panelPrefix = rtrim($panel_prefix ?? '/admin', '/');
+        if ($panelPrefix === '') {
+            $panelPrefix = '/admin';
+        }
+        $isDeveloperPanel = $panelPrefix === '/developer';
+        $panelBrandTitle = $panel_brand_title ?? ($isDeveloperPanel ? 'Developer Panel' : 'Admin Panel');
+        $panelUserLabel = $panel_user_label ?? ($isDeveloperPanel ? 'Developer' : 'Administrator');
+        $panelRootLabel = $isDeveloperPanel ? 'Developer' : 'Admin';
+        $panelLogsUrl = $panel_logs_url ?? ($panelPrefix . '/logs');
+        $panelSearchAction = $isDeveloperPanel ? ($panelPrefix . '/dashboard') : ($panelPrefix . '/repository');
+
+        $prefixMap = $isDeveloperPanel
+            ? [
+                $panelPrefix . '/dashboard' => 'Dashboard Developer',
+                $panelPrefix . '/users'     => 'Pengguna',
+                $panelPrefix . '/settings'  => 'Pengaturan',
+                $panelPrefix . '/profile'   => 'Profil Developer',
+            ]
+            : [
+                $panelPrefix . '/dashboard'     => 'Dashboard Admin',
+                $panelPrefix . '/repository'    => 'Repository',
+                $panelPrefix . '/mata-kuliah'   => 'Mata Kuliah',
+                $panelPrefix . '/program-studi' => 'Program Studi',
+                $panelPrefix . '/users'         => 'Pengguna',
+                $panelPrefix . '/logs'          => 'Log Aktivitas',
+                $panelPrefix . '/settings'      => 'Pengaturan',
+                $panelPrefix . '/profile'       => 'Profil',
+            ];
         $computedTitle = null;
         foreach ($prefixMap as $prefix => $label) {
             if (strpos($path, $prefix) === 0) { $computedTitle = $label; break; }
         }
-        $effectiveTitle = $page_title ?? $computedTitle ?? 'Admin Panel';
+        $effectiveTitle = $page_title ?? $computedTitle ?? ($panel_default_title ?? $panelBrandTitle);
     ?>
     <title><?= htmlspecialchars($effectiveTitle) ?> - SIREPO INHAFI</title>
     
@@ -31,11 +50,7 @@
     <link rel="apple-touch-icon" href="<?= $base_url; ?>/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="<?= $base_url; ?>/manifest.webmanifest">
 
-    <?php
-      $cssPath = __DIR__ . '/../../../public/assets/css/tailwind.css';
-      $cssVersion = file_exists($cssPath) ? filemtime($cssPath) : time();
-    ?>
-    <link rel="stylesheet" href="<?= $base_url ?>/assets/css/tailwind.css?v=<?= $cssVersion ?>">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -108,8 +123,11 @@
 <script>
     (function() {
         const key = 'sirepo-theme';
+        const panelPrefix = <?= json_encode($panelPrefix) ?>;
         const path = (window.location.pathname || '').replace(/\/+$/, '') || '/';
-        const defaultLight = /\/admin\/repository(\/[^\/]+\/edit|\/create)$/.test(path);
+        const escapedPrefix = panelPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const defaultLightRegex = new RegExp('^' + escapedPrefix + '/repository(?:/[^/]+/edit|/create)$');
+        const defaultLight = defaultLightRegex.test(path);
 
         let saved = localStorage.getItem(key);
         if (!saved || defaultLight) {
@@ -140,12 +158,12 @@
             <div id="brandWrapper" class="flex items-center gap-3 w-full transition-all duration-300 origin-left">
                 
                 <div class="w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
-                    <img src="<?= $base_url; ?>/assets/img/image.png" alt="Logo Admin" class="w-full h-full object-contain">
+                    <img src="<?= $base_url; ?>/assets/img/image.png" alt="Logo Panel" class="w-full h-full object-contain">
                 </div>
 
                 <div id="brandText" class="sidebar-text opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden flex-1 min-w-0">
                     <p class="text-[10px] font-bold text-emerald-600 tracking-wider uppercase">SIREPO INHAFI</p>
-                    <p class="text-sm md:text-base font-bold text-slate-800 leading-tight truncate">Admin Panel</p>
+                    <p class="text-sm md:text-base font-bold text-slate-800 leading-tight truncate"><?= e($panelBrandTitle) ?></p>
                 </div>
             </div>
 
@@ -174,29 +192,40 @@
             $current = $_SERVER['REQUEST_URI'];
             ?>
 
-            <div>
-                <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Main Menu</p>
-                <div class="space-y-1">
-                    <?= renderMenuItem('/admin/dashboard', 'Dashboard', '<path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>', $current, $base_url) ?>
-                    <?= renderMenuItem('/admin/repository', 'Repository', '<path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>', $current, $base_url) ?>
+            <?php if ($isDeveloperPanel): ?>
+                <div>
+                    <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Main Menu</p>
+                    <div class="space-y-1">
+                        <?= renderMenuItem($panelPrefix . '/dashboard', 'Dashboard', '<path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>', $current, $base_url) ?>
+                        <?= renderMenuItem($panelPrefix . '/users', 'Pengguna', '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>', $current, $base_url) ?>
+                        <?= renderMenuItem($panelPrefix . '/settings', 'Pengaturan', '<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>', $current, $base_url) ?>
+                        <?= renderMenuItem($panelPrefix . '/profile', 'Profil', '<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>', $current, $base_url) ?>
+                    </div>
                 </div>
-            </div>
+            <?php else: ?>
+                <div>
+                    <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Main Menu</p>
+                    <div class="space-y-1">
+                        <?= renderMenuItem($panelPrefix . '/dashboard', 'Dashboard', '<path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>', $current, $base_url) ?>
+                        <?= renderMenuItem($panelPrefix . '/repository', 'Repository', '<path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>', $current, $base_url) ?>
+                    </div>
+                </div>
 
-            <div>
-                <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Akademik</p>
-                <div class="space-y-1">
-                    <?= renderMenuItem('/admin/mata-kuliah', 'Mata Kuliah', '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>', $current, $base_url) ?>
-                    <?= renderMenuItem('/admin/program-studi', 'Program Studi', '<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>', $current, $base_url) ?>
+                <div>
+                    <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Akademik</p>
+                    <div class="space-y-1">
+                        <?= renderMenuItem($panelPrefix . '/mata-kuliah', 'Mata Kuliah', '<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>', $current, $base_url) ?>
+                        <?= renderMenuItem($panelPrefix . '/program-studi', 'Program Studi', '<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>', $current, $base_url) ?>
+                    </div>
                 </div>
-            </div>
 
-             <div>
-                <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Sistem</p>
-                <div class="space-y-1">
-                    <?= renderMenuItem('/admin/users', 'Pengguna', '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>', $current, $base_url) ?>
-                    <?= renderMenuItem('/admin/settings', 'Pengaturan', '<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>', $current, $base_url) ?>
+                <div>
+                    <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 sidebar-text">Sistem</p>
+                    <div class="space-y-1">
+                        <?= renderMenuItem($panelPrefix . '/users', 'Pengguna', '<path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>', $current, $base_url) ?>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </nav>
 
         <?php $csrfLogout = \App\Core\Security\Csrf::token(); ?>
@@ -207,7 +236,7 @@
                 </div>
                 <div class="flex-1 min-w-0 sidebar-text">
                     <p class="text-sm font-semibold text-slate-800 truncate"><?= e($admin['nama'] ?? 'Admin') ?></p>
-                    <p class="text-xs text-slate-400 truncate">Administrator</p>
+                    <p class="text-xs text-slate-400 truncate"><?= e($panelUserLabel) ?></p>
                 </div>
                 <form action="<?= $base_url ?>/logout" method="POST" class="sidebar-text flex-shrink-0">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfLogout) ?>">
@@ -239,7 +268,7 @@
                 </div>
 
                 <div class="hidden md:block w-full max-w-sm ml-2">
-                    <form action="<?= $base_url ?>/admin/repository" method="GET" class="relative group">
+                    <form action="<?= $base_url . $panelSearchAction ?>" method="GET" class="relative group">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 group-focus-within:text-emerald-500 transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         </span>
@@ -267,7 +296,7 @@
                     <div id="notifDropdown" class="hidden absolute right-[-50px] sm:right-0 mt-3 w-[85vw] sm:w-80 md:w-96 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 overflow-hidden ring-1 ring-slate-900/5 origin-top-right transition-all transform opacity-0 scale-95 data-[state=open]:opacity-100 data-[state=open]:scale-100">
                         <div class="px-5 py-4 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
                             <span class="font-bold text-sm text-slate-800">Notifikasi</span>
-                            <a href="<?= $base_url ?>/admin/logs" class="text-[10px] font-semibold text-emerald-600 hover:text-emerald-700">Lihat Semua</a>
+                            <a href="<?= $base_url . $panelLogsUrl ?>" class="text-[10px] font-semibold text-emerald-600 hover:text-emerald-700">Lihat Semua</a>
                         </div>
                         
                         <ul class="max-h-[50vh] overflow-y-auto custom-scrollbar divide-y divide-slate-50">
@@ -314,7 +343,7 @@
                     <button id="profileBtn" type="button" class="flex items-center gap-2 md:gap-3 focus:outline-none group">
                         <div class="hidden md:flex flex-col text-right">
                             <span class="text-sm font-bold text-slate-700 group-hover:text-emerald-600 transition-colors"><?= htmlspecialchars($admin['nama'] ?? 'Admin') ?></span>
-                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Administrator</span>
+                            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide"><?= e($panelUserLabel) ?></span>
                         </div>
                         <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 p-[2px] flex-shrink-0">
                             <div class="w-full h-full rounded-full bg-white flex items-center justify-center">
@@ -325,7 +354,7 @@
                     
                     <div id="profileDropdown" class="hidden absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-xl shadow-lg z-50 origin-top-right">
                         <div class="p-2 space-y-1">
-                            <a href="<?= $base_url ?>/admin/profile" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-50 hover:text-emerald-600">
+                            <a href="<?= $base_url . $panelPrefix ?>/profile" class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-50 hover:text-emerald-600">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 Edit Profile
                             </a>
@@ -369,7 +398,7 @@
                     $page_title = $page_title ?? '';
                     $page_subtitle = $page_subtitle ?? '';
                     $breadcrumbs = $breadcrumb ?? [
-                        ['label' => 'Admin', 'url' => null],
+                        ['label' => $panelRootLabel, 'url' => null],
                         ['label' => $page_title],
                     ];
                 ?>

@@ -1,4 +1,8 @@
-<?php $base = rtrim($base_url, '/'); ?>
+<?php
+$base = rtrim($base_url, '/');
+$panelPrefix = rtrim($panel_prefix ?? '/admin', '/');
+$panelUserLabel = $panel_user_label ?? 'Administrator';
+?>
 
 <div class="space-y-6 animate-fade-in-up">
     
@@ -36,7 +40,7 @@
                     </div>
 
                     <h2 class="mt-5 text-lg font-bold text-slate-800"><?= e($admin['nama'] ?? $admin['nama_lengkap'] ?? 'Admin') ?></h2>
-                    <p class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full mt-2 font-medium">Administrator</p>
+                    <p class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full mt-2 font-medium"><?= e($panelUserLabel) ?></p>
                     
                     <div class="mt-6 w-full border-t border-slate-100 pt-6">
                         <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-3">Informasi Login</div>
@@ -61,7 +65,7 @@
                     <h3 class="text-lg font-bold text-slate-800">Edit Informasi</h3>
                 </div>
 
-                <form action="<?= $base ?>/admin/profile" method="POST" class="space-y-5">
+                <form action="<?= $base . $panelPrefix ?>/profile" method="POST" class="space-y-5">
                     <input type="hidden" name="csrf_token" value="<?= e($csrf ?? '') ?>">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">

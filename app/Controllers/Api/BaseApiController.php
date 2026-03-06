@@ -68,14 +68,47 @@ class BaseApiController extends Controller
 
     public function getBearerToken(): ?string
     {
-        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['Authorization'] ?? null;
-        if ($header && stripos($header, 'Bearer ') === 0) {
-            return trim(substr($header, 7));
+        $candidates = [
+            $_SERVER['HTTP_AUTHORIZATION'] ?? null,
+            $_SERVER['Authorization'] ?? null,
+            $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? null,
+        ];
+
+        if (function_exists('getallheaders')) {
+            foreach ((array) getallheaders() as $key => $value) {
+                if (strtolower((string) $key) === 'authorization') {
+                    $candidates[] = is_string($value) ? $value : null;
+                }
+            }
         }
 
-        // fallback query param
-        if (!empty($_GET['token'])) {
+        if (function_exists('apache_request_headers')) {
+            foreach ((array) apache_request_headers() as $key => $value) {
+                if (strtolower((string) $key) === 'authorization') {
+                    $candidates[] = is_string($value) ? $value : null;
+                }
+            }
+        }
+
+        foreach ($candidates as $header) {
+            if (!is_string($header) || trim($header) === '') {
+                continue;
+            }
+
+            if (stripos($header, 'Bearer ') === 0) {
+                $token = trim(substr($header, 7));
+                if ($token !== '') {
+                    return $token;
+                }
+            }
+        }
+
+        // fallback query param (berguna jika proxy/server menelan Authorization header)
+        if (!empty($_GET['token']) && is_string($_GET['token'])) {
             return trim((string) $_GET['token']);
+        }
+        if (!empty($_GET['access_token']) && is_string($_GET['access_token'])) {
+            return trim((string) $_GET['access_token']);
         }
 
         return null;

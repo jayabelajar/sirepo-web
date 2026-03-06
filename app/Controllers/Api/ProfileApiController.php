@@ -15,27 +15,57 @@ class ProfileApiController extends BaseApiController
         $this->users = new User();
     }
 
-    /**
-     * Update profil untuk mahasiswa (nama, email, username, password opsional).
-     */
-    public function updateMahasiswa(): void
+    public function show(): void
+    {
+        $user = $this->requireUser();
+        $fresh = $this->users->findById((int) $user['id']);
+        $this->success(['user' => $this->publicProfile($fresh)]);
+    }
+
+    public function showMahasiswa(): void
     {
         $user = $this->currentUser('mahasiswa');
         if (!$user) {
             $this->fail('Token tidak valid atau sudah kedaluwarsa.', 401);
         }
 
-        $payload = array_merge($this->getJsonInput(), $_POST ?? []);
-        $data = $this->validateProfilePayload($payload, false);
+        $fresh = $this->users->findById((int) $user['id']);
+        $this->success(['user' => $this->publicProfile($fresh)]);
+    }
 
-        if (!$this->users->updateProfile((int) $user['id'], $data)) {
-            $this->fail('Tidak ada perubahan yang disimpan.', 422);
+    public function showDosen(): void
+    {
+        $user = $this->currentUser('dosen');
+        if (!$user) {
+            $this->fail('Token tidak valid atau sudah kedaluwarsa.', 401);
         }
 
-        $updated = $this->users->findById((int) $user['id']);
-        ActivityLogger::log((int) $user['id'], 'update_profile', 'users', (int) $user['id'], 'Perbarui profil mahasiswa');
+        $fresh = $this->users->findById((int) $user['id']);
+        $this->success(['user' => $this->publicProfile($fresh)]);
+    }
 
-        $this->success(['user' => $this->publicProfile($updated)]);
+    public function update(): void
+    {
+        $user = $this->requireUser();
+        $role = (string) ($user['role'] ?? '');
+
+        if ($role === 'mahasiswa') {
+            $this->updateByRole('mahasiswa', false, 'Perbarui profil mahasiswa');
+        }
+
+        if ($role === 'dosen') {
+            $this->updateByRole('dosen', true, 'Perbarui profil dosen');
+        }
+
+        $this->fail('Role tidak diizinkan untuk update profil.', 403);
+    }
+
+    /**
+     * Update profil untuk mahasiswa (nama, email, username, password opsional).
+     */
+    public function updateMahasiswa(): void
+    {
+        $this->updateByRole('mahasiswa', false, 'Perbarui profil mahasiswa');
     }
 
     /**
@@ -43,20 +73,25 @@ class ProfileApiController extends BaseApiController
      */
     public function updateDosen(): void
     {
-        $user = $this->currentUser('dosen');
+        $this->updateByRole('dosen', true, 'Perbarui profil dosen');
+    }
+
+    private function updateByRole(string $role, bool $includeNidn, string $activityDescription): void
+    {
+        $user = $this->currentUser($role);
         if (!$user) {
             $this->fail('Token tidak valid atau sudah kedaluwarsa.', 401);
         }
 
         $payload = array_merge($this->getJsonInput(), $_POST ?? []);
-        $data = $this->validateProfilePayload($payload, true);
+        $data = $this->validateProfilePayload($payload, $includeNidn);
 
         if (!$this->users->updateProfile((int) $user['id'], $data)) {
             $this->fail('Tidak ada perubahan yang disimpan.', 422);
         }
 
         $updated = $this->users->findById((int) $user['id']);
-        ActivityLogger::log((int) $user['id'], 'update_profile', 'users', (int) $user['id'], 'Perbarui profil dosen');
+        ActivityLogger::log((int) $user['id'], 'update_profile', 'users', (int) $user['id'], $activityDescription);
 
         $this->success(['user' => $this->publicProfile($updated)]);
     }

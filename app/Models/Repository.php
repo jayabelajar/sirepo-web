@@ -266,7 +266,10 @@ class Repository extends Model
     ------------------------------ */
     public function getUserRelations(int $repoId): array
     {
-        $sql = "SELECT user_id, role_in_repo FROM repository_users WHERE repository_id = :rid";
+        $sql = "SELECT user_id, role_in_repo
+                FROM repository_users
+                WHERE repository_id = :rid
+                ORDER BY id ASC";
         $rows = $this->query($sql, ['rid' => $repoId])->fetchAll();
 
         $authors   = [];
@@ -518,12 +521,20 @@ class Repository extends Model
             $params['q4'] = $params['q1'];
             $params['q5'] = $params['q1'];
             $params['q6'] = $params['q1'];
+            $params['q7'] = $params['q1'];
             $where .= " AND (r.judul LIKE :q1 
                         OR r.author LIKE :q2 
                         OR r.slug LIKE :q3 
                         OR ps.nama_program_studi LIKE :q4 
                         OR r.keywords LIKE :q5
-                        OR mk.nama LIKE :q6)";
+                        OR mk.nama LIKE :q6
+                        OR r.jenis_karya LIKE :q7)";
+        }
+
+        $author = trim((string) ($filters['author'] ?? ''));
+        if ($author !== '') {
+            $params['author'] = '%' . $author . '%';
+            $where .= " AND r.author LIKE :author";
         }
 
         if (isset($filters['tahun']) && $filters['tahun'] !== '' && $filters['tahun'] !== null) {
@@ -537,7 +548,7 @@ class Repository extends Model
             $where .= " AND r.program_studi_id = :ps";
         }
 
-        $mkId = $filters['mata_kuliah_id'] ?? ($filters['mk'] ?? null);
+        $mkId = $filters['mata_kuliah_id'] ?? ($filters['mk_id'] ?? ($filters['mk'] ?? null));
         if ($mkId !== '' && $mkId !== null) {
             $params['mk'] = (int) $mkId;
             $where .= " AND r.mata_kuliah_id = :mk";
@@ -760,7 +771,17 @@ class Repository extends Model
             $params['q1'] = '%' . $keyword . '%';
             $params['q2'] = $params['q1'];
             $params['q3'] = $params['q1'];
-            $clauses[] = "(r.judul LIKE :q1 OR r.author LIKE :q2 OR r.slug LIKE :q3)";
+            $params['q4'] = $params['q1'];
+            $params['q5'] = $params['q1'];
+            $params['q6'] = $params['q1'];
+            $params['q7'] = $params['q1'];
+            $clauses[] = "(r.judul LIKE :q1
+                        OR r.author LIKE :q2
+                        OR r.slug LIKE :q3
+                        OR ps.nama_program_studi LIKE :q4
+                        OR mk.nama LIKE :q5
+                        OR r.keywords LIKE :q6
+                        OR r.jenis_karya LIKE :q7)";
         }
 
         if (isset($filters['tahun']) && $filters['tahun'] !== '' && $filters['tahun'] !== null) {
@@ -768,9 +789,28 @@ class Repository extends Model
             $clauses[] = "r.tahun = :tahun";
         }
 
-        if (!empty($filters['program_studi_id'])) {
-            $params['ps'] = (int) $filters['program_studi_id'];
+        $prodiId = $filters['program_studi_id'] ?? ($filters['prodi_id'] ?? ($filters['prodi'] ?? null));
+        if ($prodiId !== null && $prodiId !== '') {
+            $params['ps'] = (int) $prodiId;
             $clauses[] = "r.program_studi_id = :ps";
+        }
+
+        $mkId = $filters['mata_kuliah_id'] ?? ($filters['mk_id'] ?? ($filters['mk'] ?? null));
+        if ($mkId !== null && $mkId !== '') {
+            $params['mk'] = (int) $mkId;
+            $clauses[] = "r.mata_kuliah_id = :mk";
+        }
+
+        $jenis = trim((string) ($filters['jenis_karya'] ?? ($filters['jenis'] ?? '')));
+        if ($jenis !== '') {
+            $params['jenis'] = $jenis;
+            $clauses[] = "r.jenis_karya = :jenis";
+        }
+
+        $author = trim((string) ($filters['author'] ?? ''));
+        if ($author !== '') {
+            $params['author'] = '%' . $author . '%';
+            $clauses[] = "r.author LIKE :author";
         }
 
         return 'WHERE ' . implode(' AND ', $clauses);

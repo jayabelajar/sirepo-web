@@ -9,7 +9,6 @@
     $ogType = $ogType ?? 'website';
     $ogImage = $ogImage ?? ($baseHref . '/assets/img/inhafi.png');
     $ogImageAlt = $ogImageAlt ?? $siteName;
-    $cssHref = $cssHref ?? ($baseHref . '/assets/css/tailwind.css');
 ?>
 <head>
     <meta charset="UTF-8" />
@@ -47,7 +46,7 @@
     <link rel="apple-touch-icon" href="<?= $baseHref; ?>/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="<?= $baseHref; ?>/manifest.webmanifest">
 
-    <link rel="stylesheet" href="<?= e($cssHref); ?>" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         :root { color-scheme: light; }

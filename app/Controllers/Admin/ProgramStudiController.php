@@ -96,10 +96,12 @@ class ProgramStudiController extends Controller
     {
         Auth::checkAdmin();
         Sanitizer::cleanRequest();
+        $redirectBase = '/admin/program-studi';
+        $saveAndNew = !empty($_POST['save_and_new']);
 
         if (!Csrf::check($_POST['csrf_token'] ?? '')) {
             $_SESSION['flash_error'] = 'Sesi kadaluarsa.';
-            return $this->redirect('/admin/program-studi');
+            return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
         }
 
         $data = [
@@ -108,13 +110,13 @@ class ProgramStudiController extends Controller
 
         if ($data['nama_program_studi'] === '') {
             $_SESSION['flash_error'] = 'Nama prodi wajib diisi.';
-            return $this->redirect('/admin/program-studi');
+            return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
         }
 
         $this->model->create($data);
         ActivityLogger::log($_SESSION['admin']['id'] ?? null, 'create_prodi', 'program_studi', null, 'Menambah prodi: ' . ($data['nama_program_studi'] ?? ''));
         $_SESSION['flash_success'] = 'Program studi ditambahkan.';
-        return $this->redirect('/admin/program-studi');
+        return $this->redirect($saveAndNew ? $redirectBase . '?open=create' : $redirectBase);
     }
 
     public function update($id)

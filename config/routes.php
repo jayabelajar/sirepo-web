@@ -10,6 +10,7 @@ use App\Controllers\Public\{
     RepositoryController,
     FileDownloadController,
     SitemapController,
+    RobotsController,
     HalamanController,
     RegisterController,
     MaintenanceController
@@ -19,6 +20,7 @@ use App\Controllers\Public\{
 use App\Controllers\Auth\AuthMahasiswaController;
 use App\Controllers\Auth\AuthDosenController;
 use App\Controllers\Auth\AuthAdminController;
+use App\Controllers\Auth\AuthDeveloperController;
 use App\Controllers\Auth\ForgotPasswordController;
 
 /* DASHBOARD MAHASISWA */
@@ -48,6 +50,8 @@ use App\Controllers\Admin\UserController as AdminUser;
 use App\Controllers\Admin\ProfileController as AdminProfile;
 use App\Controllers\Admin\SettingController as AdminSetting;
 use App\Controllers\Admin\LogController as AdminLog;
+use App\Controllers\Developer\DashboardController as DeveloperDashboard;
+use App\Controllers\Developer\ProfileController as DeveloperProfile;
 use App\Models\Setting;
 
 /* API controllers */
@@ -57,6 +61,7 @@ use App\Controllers\Api\LookupApiController;
 use App\Controllers\Api\BookmarkApiController;
 use App\Controllers\Api\MobileAdminApiController;
 use App\Controllers\Api\ProfileApiController;
+use App\Controllers\Api\ForgotPasswordApiController;
 
 
 /* init router */
@@ -80,9 +85,12 @@ if ($basePath !== '' && strpos($requestPath, $basePath) === 0) {
 }
 
 $isAdminPath = strpos($requestPath, '/admin') === 0
+    || strpos($requestPath, '/developer') === 0
     || strpos($requestPath, '/__admin') === 0
+    || strpos($requestPath, '/__developer') === 0
     || strpos($requestPath, '/__dosen') === 0
     || strpos($requestPath, '/login/admin') === 0
+    || strpos($requestPath, '/login/developer') === 0
     || strpos($requestPath, '/login/dosen') === 0
     || strpos($requestPath, '/lupa-password/dosen') === 0
     || strpos($requestPath, '/api') === 0;
@@ -125,6 +133,18 @@ $router->get('/telusuri/jenis-karya/{jenis}',    [TelusuriController::class, 'je
 /* detail repository */
 $router->get('/repository/{slug}',               [RepositoryController::class, 'detail']);
 $router->get('/repository/{slug}/download',      [FileDownloadController::class, 'repository']);
+$router->get('/robots.txt',                      [RobotsController::class, 'index']);
+$router->get('/robots.txt/',                     [RobotsController::class, 'index']);
+$router->get('/robot.txt', static function () use ($config): void {
+    $base = rtrim($config['base_url'] ?? '', '/');
+    header('Location: ' . $base . '/robots.txt', true, 301);
+    exit;
+});
+$router->get('/robot.txt/', static function () use ($config): void {
+    $base = rtrim($config['base_url'] ?? '', '/');
+    header('Location: ' . $base . '/robots.txt', true, 301);
+    exit;
+});
 $router->get('/sitemap.xml',                     [SitemapController::class, 'index']);
 $router->get('/sitemap.xml/',                    [SitemapController::class, 'index']);
 
@@ -161,6 +181,16 @@ $router->get('/__admin/login', static function () use ($redirectTo): void {
     $redirectTo('/login/admin');
 });
 $router->post('/__admin/login',      [AuthAdminController::class, 'login']); // backward compatibility
+
+/* ============================================================
+   AUTH DEVELOPER
+============================================================ */
+$router->get('/login/developer',      [AuthDeveloperController::class, 'showLoginForm']);
+$router->post('/login/developer',     [AuthDeveloperController::class, 'login']);
+$router->get('/__developer/login', static function () use ($redirectTo): void {
+    $redirectTo('/login/developer');
+});
+$router->post('/__developer/login',   [AuthDeveloperController::class, 'login']); // backward compatibility
 
 /* ============================================================
    LUPA PASSWORD (MAHASISWA & DOSEN)
@@ -246,34 +276,82 @@ $router->post('/admin/logs/reset-old', [AdminLog::class, 'resetOld']);
 
 
 /* ============================================================
+   DASHBOARD DEVELOPER
+============================================================ */
+$router->get('/developer', static function () use ($redirectTo): void {
+    $redirectTo('/developer/dashboard');
+});
+$router->get('/developer/dashboard', [DeveloperDashboard::class, 'index']);
+$router->get('/developer/profile', [DeveloperProfile::class, 'index']);
+$router->post('/developer/profile', [DeveloperProfile::class, 'update']);
+$router->get('/developer/users', [AdminUser::class, 'index']);
+$router->post('/developer/users', [AdminUser::class, 'store']);
+$router->post('/developer/users/{id}/update', [AdminUser::class, 'update']);
+$router->post('/developer/users/{id}/toggle-ban', [AdminUser::class, 'toggleBan']);
+$router->get('/developer/users/export', [AdminUser::class, 'export']);
+$router->post('/developer/users/import', [AdminUser::class, 'import']);
+$router->post('/developer/users/{id}/delete', [AdminUser::class, 'delete']);
+$router->get('/developer/settings', [AdminSetting::class, 'index']);
+$router->post('/developer/settings/maintenance', [AdminSetting::class, 'maintenance']);
+$router->get('/developer/settings/backup', [AdminSetting::class, 'backup']);
+
+
+/* ============================================================
    API ENDPOINTS (JSON)
 ============================================================ */
 $router->post('/api/login', [AuthApiController::class, 'login']);
 $router->post('/api/mobile/login/mahasiswa', [AuthApiController::class, 'loginMahasiswa']);
 $router->post('/api/mobile/login/dosen', [AuthApiController::class, 'loginDosen']);
+$router->post('/api/logout', [AuthApiController::class, 'logout']);
 $router->get('/api/me', [AuthApiController::class, 'me']);
+$router->get('/api/profile', [ProfileApiController::class, 'show']);
+$router->post('/api/profile', [ProfileApiController::class, 'update']);
+$router->put('/api/profile', [ProfileApiController::class, 'update']);
+$router->patch('/api/profile', [ProfileApiController::class, 'update']);
+
+$router->post('/api/forgot-password/request', [ForgotPasswordApiController::class, 'requestReset']);
+$router->get('/api/forgot-password/verify/{token}', [ForgotPasswordApiController::class, 'verifyToken']);
+$router->post('/api/forgot-password/reset', [ForgotPasswordApiController::class, 'resetPassword']);
 
 $router->get('/api/repositories', [RepositoryApiController::class, 'publicIndex']);
 $router->get('/api/repositories/{slug}', [RepositoryApiController::class, 'publicShow']);
 $router->get('/api/repositories/{id}/download', [RepositoryApiController::class, 'download']);
 
 $router->get('/api/lookups', [LookupApiController::class, 'index']);
+$router->get('/api/lookups/categories', [LookupApiController::class, 'categories']);
+$router->get('/api/categories', [LookupApiController::class, 'categories']);
+$router->get('/api/categories/page', [LookupApiController::class, 'categoryPage']);
+$router->get('/api/categories/{type}/{value}/repositories', [RepositoryApiController::class, 'publicByCategory']);
 
 $router->get('/api/bookmarks', [BookmarkApiController::class, 'index']);
+$router->post('/api/bookmarks', [BookmarkApiController::class, 'store']);
+$router->get('/api/bookmarks/{id}', [BookmarkApiController::class, 'show']);
+$router->delete('/api/bookmarks/{id}', [BookmarkApiController::class, 'destroy']);
 $router->post('/api/bookmarks/toggle', [BookmarkApiController::class, 'toggle']);
 
 // Mobile public
 $router->get('/api/mobile/public/home', [MobileAdminApiController::class, 'publicHome']);
+$router->get('/api/mobile/public/lookups', [LookupApiController::class, 'index']);
+$router->get('/api/mobile/public/categories', [LookupApiController::class, 'categories']);
+$router->get('/api/mobile/public/categories/page', [LookupApiController::class, 'categoryPage']);
+$router->get('/api/mobile/public/categories/{type}/{value}/repositories', [RepositoryApiController::class, 'publicByCategory']);
 $router->get('/api/mobile/public/repositories', [RepositoryApiController::class, 'publicIndex']);
 $router->get('/api/mobile/public/repositories/{slug}', [RepositoryApiController::class, 'publicShow']);
 $router->get('/api/mobile/public/repositories/{id}/download', [RepositoryApiController::class, 'download']);
+$router->post('/api/mobile/forgot-password/request', [ForgotPasswordApiController::class, 'requestReset']);
+$router->get('/api/mobile/forgot-password/verify/{token}', [ForgotPasswordApiController::class, 'verifyToken']);
+$router->post('/api/mobile/forgot-password/reset', [ForgotPasswordApiController::class, 'resetPassword']);
 
 // Mobile mahasiswa
 $router->get('/api/mobile/mahasiswa/dashboard', [MobileAdminApiController::class, 'mahasiswaDashboard']);
 $router->get('/api/mobile/mahasiswa/repositories', [MobileAdminApiController::class, 'mahasiswaRepositories']);
 $router->get('/api/mobile/mahasiswa/bookmarks', [MobileAdminApiController::class, 'bookmarks']);
+$router->post('/api/mobile/mahasiswa/bookmarks', [BookmarkApiController::class, 'store']);
+$router->get('/api/mobile/mahasiswa/bookmarks/{id}', [BookmarkApiController::class, 'show']);
+$router->delete('/api/mobile/mahasiswa/bookmarks/{id}', [BookmarkApiController::class, 'destroy']);
 $router->post('/api/mobile/mahasiswa/bookmarks/toggle', [MobileAdminApiController::class, 'toggleBookmark']);
 $router->get('/api/mobile/mahasiswa/activities', [MobileAdminApiController::class, 'activities']);
+$router->get('/api/mobile/mahasiswa/profile', [ProfileApiController::class, 'showMahasiswa']);
 $router->post('/api/mobile/mahasiswa/profile', [ProfileApiController::class, 'updateMahasiswa']);
 $router->put('/api/mobile/mahasiswa/profile', [ProfileApiController::class, 'updateMahasiswa']);
 $router->patch('/api/mobile/mahasiswa/profile', [ProfileApiController::class, 'updateMahasiswa']);
@@ -281,6 +359,9 @@ $router->patch('/api/mobile/mahasiswa/profile', [ProfileApiController::class, 'u
 // Mobile dosen
 $router->get('/api/mobile/dosen/dashboard', [MobileAdminApiController::class, 'dosenDashboard']);
 $router->get('/api/mobile/dosen/bookmarks', [MobileAdminApiController::class, 'bookmarks']);
+$router->post('/api/mobile/dosen/bookmarks', [BookmarkApiController::class, 'store']);
+$router->get('/api/mobile/dosen/bookmarks/{id}', [BookmarkApiController::class, 'show']);
+$router->delete('/api/mobile/dosen/bookmarks/{id}', [BookmarkApiController::class, 'destroy']);
 $router->post('/api/mobile/dosen/bookmarks/toggle', [MobileAdminApiController::class, 'toggleBookmark']);
 $router->get('/api/mobile/dosen/activities', [MobileAdminApiController::class, 'activities']);
 $router->get('/api/mobile/dosen/repositories', [RepositoryApiController::class, 'dosenIndex']);
@@ -290,6 +371,7 @@ $router->put('/api/mobile/dosen/repositories/{id}', [RepositoryApiController::cl
 $router->patch('/api/mobile/dosen/repositories/{id}', [RepositoryApiController::class, 'update']);
 $router->delete('/api/mobile/dosen/repositories/{id}', [RepositoryApiController::class, 'destroy']);
 $router->post('/api/mobile/dosen/repositories/{id}/upload', [RepositoryApiController::class, 'uploadFile']);
+$router->get('/api/mobile/dosen/profile', [ProfileApiController::class, 'showDosen']);
 $router->post('/api/mobile/dosen/profile', [ProfileApiController::class, 'updateDosen']);
 $router->put('/api/mobile/dosen/profile', [ProfileApiController::class, 'updateDosen']);
 $router->patch('/api/mobile/dosen/profile', [ProfileApiController::class, 'updateDosen']);

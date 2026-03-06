@@ -11,6 +11,27 @@ function slugify(string $text): string
     return trim($text, '-') ?: 'judul-' . uniqid();
 }
 
+function normalizeJenisKarya(string $value): string
+{
+    $v = strtolower(trim($value));
+    $v = str_replace(['-', ' '], '_', $v);
+
+    $map = [
+        'skripsi'        => 'skripsi',
+        'tugas_akhir'    => 'tugas_akhir',
+        'jurnal'         => 'jurnal',
+        'artikel'        => 'artikel',
+        'artikel_ilmiah' => 'artikel',
+        'laporan'        => 'laporan',
+        'pkl'            => 'pkl',
+        'tesis'          => 'lainnya',
+        'thesis'         => 'lainnya',
+        'lainnya'        => 'lainnya',
+    ];
+
+    return $map[$v] ?? 'lainnya';
+}
+
 // === Muat ENV agar koneksi mengikuti konfigurasi aplikasi ===
 $envFile = __DIR__ . '/.env';
 if (is_file($envFile)) {
@@ -47,6 +68,18 @@ try {
     exit(1);
 }
 
+// Pastikan enum role mendukung developer.
+try {
+    $roleColumn = $pdo->query("SHOW COLUMNS FROM users LIKE 'role'")->fetch();
+    $roleType = strtolower((string) ($roleColumn['Type'] ?? ''));
+    if (strpos($roleType, "enum(") === 0 && strpos($roleType, "'developer'") === false) {
+        $pdo->exec("ALTER TABLE users MODIFY role ENUM('admin','developer','dosen','mahasiswa') NOT NULL");
+        echo "[OK] Enum role users diperbarui untuk mendukung developer" . PHP_EOL;
+    }
+} catch (Throwable $e) {
+    fwrite(STDERR, "[WARN] Gagal memastikan enum role developer: {$e->getMessage()}" . PHP_EOL);
+}
+
 $accounts = [
     [
         'username'      => 'admin1',
@@ -54,6 +87,15 @@ $accounts = [
         'email'         => 'admin@gmail.com',
         'password'      => 'admin12345',
         'role'          => 'admin',
+        'nim'           => null,
+        'nidn_nip'      => null,
+    ],
+    [
+        'username'      => 'developer1',
+        'nama_lengkap'  => 'Developer Sistem',
+        'email'         => 'developer@gmail.com',
+        'password'      => 'developer12345',
+        'role'          => 'developer',
         'nim'           => null,
         'nidn_nip'      => null,
     ],
@@ -266,7 +308,7 @@ foreach ($repoSamples as $repo) {
     $repoInsert->execute([
         ':judul'            => $repo['judul'],
         ':slug'             => $slug,
-        ':jenis_karya'      => $repo['jenis_karya'],
+        ':jenis_karya'      => normalizeJenisKarya((string) $repo['jenis_karya']),
         ':author'           => $repo['author'],
         ':tahun'            => $repo['tahun'],
         ':program_studi_id' => $psId,

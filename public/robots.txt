@@ -1,8 +1,15 @@
 User-agent: *
 Disallow: /admin/
+Disallow: /developer/
+Disallow: /dosen/
+Disallow: /mahasiswa/
 Disallow: /api/
 Disallow: /assets/uploads/
+Disallow: /login/
+Disallow: /logout
+Disallow: /reset-password/
 Allow: /repository/
 Allow: /telusuri
+Allow: /sitemap.xml
 
 Sitemap: /sitemap.xml

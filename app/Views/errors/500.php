@@ -11,7 +11,7 @@ $page_title = '500 - Terjadi Kesalahan | ' . $app_name;
     <title><?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
     <meta name="robots" content="noindex,follow">
     <meta name="description" content="Terjadi kesalahan pada server <?= htmlspecialchars($app_name, ENT_QUOTES, 'UTF-8'); ?>. Silakan coba lagi atau hubungi admin.">
-    <link rel="stylesheet" href="<?= $base_url; ?>/assets/css/tailwind.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style> body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; } </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4 py-12">

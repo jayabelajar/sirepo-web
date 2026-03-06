@@ -1,4 +1,10 @@
 <?php $base = rtrim($base_url, '/'); ?>
+<?php
+$panelPrefix = rtrim($panel_prefix ?? '/admin', '/');
+if ($panelPrefix === '') {
+    $panelPrefix = '/admin';
+}
+?>
 
 <div class="space-y-6 animate-fade-in-up">
     
@@ -28,7 +34,7 @@
                     </div>
                 </div>
 
-                <form action="<?= $base ?>/admin/settings/maintenance" method="POST" class="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
+                <form action="<?= $base . $panelPrefix ?>/settings/maintenance" method="POST" class="flex flex-col md:flex-row md:items-center gap-4 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
                     <input type="hidden" name="csrf_token" value="<?= e($csrf ?? '') ?>">
                     
                     <div class="flex items-center justify-between md:justify-start w-full md:w-auto bg-slate-50 md:bg-transparent p-3 md:p-0 rounded-xl md:rounded-none border md:border-none border-slate-100">
@@ -67,7 +73,7 @@
                 </div>
 
                 <div class="w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100">
-                    <a href="<?= $base ?>/admin/settings/backup" class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 border-emerald-100 text-emerald-700 text-sm font-bold hover:bg-emerald-50 hover:border-emerald-200 transition-all active:scale-95 shadow-sm whitespace-nowrap">
+                    <a href="<?= $base . $panelPrefix ?>/settings/backup" class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 border-emerald-100 text-emerald-700 text-sm font-bold hover:bg-emerald-50 hover:border-emerald-200 transition-all active:scale-95 shadow-sm whitespace-nowrap">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         Download SQL
                     </a>

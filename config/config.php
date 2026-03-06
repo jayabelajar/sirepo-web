@@ -60,10 +60,10 @@ return [
 
     'mail' => [
         'host'         => $env('MAIL_HOST', 'smtp.gmail.com'),
-        'port'         => (int) $env('MAIL_PORT', 465),
+        'port'         => (int) $env('MAIL_PORT', 587),
         'username'     => $env('MAIL_USERNAME', ''),
         'password'     => $env('MAIL_PASSWORD', ''),
-        'encryption'   => strtolower((string) $env('MAIL_ENCRYPTION', 'ssl')), // ssl | tls
+        'encryption'   => strtolower((string) $env('MAIL_ENCRYPTION', 'tls')), // ssl | tls
         'from_address' => $env('MAIL_FROM_ADDRESS', $env('MAIL_USERNAME', '')),
         'from_name'    => $env('MAIL_FROM_NAME', $env('APP_NAME', 'SIREPO')),
         'timeout'      => (int) $env('MAIL_TIMEOUT', 15),

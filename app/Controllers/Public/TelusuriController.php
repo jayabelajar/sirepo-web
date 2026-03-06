@@ -89,7 +89,7 @@ class TelusuriController extends Controller
 
         $seo = [
             'title'       => 'Telusuri Repository | ' . $appName,
-            'description' => 'Telusuri dokumen berdasarkan kata kunci, tahun, program studi, jenis karya, dan penulis.',
+            'description' => 'Telusuri dokumen berdasarkan kata kunci, tahun, program studi, jenis publikasi, dan penulis.',
             'canonical'   => $base . '/telusuri',
         ];
 
@@ -225,16 +225,17 @@ class TelusuriController extends Controller
         $appName = $config['app_name'] ?? 'Sistem Informasi Repository Institut Agama Islam Hasan Jufri';
         $base    = rtrim($config['base_url'] ?? '', '/');
 
-        $items = $this->repo->getByAuthor($name);
-        $title = 'Penulis: ' . urldecode($name);
+        $authorName = urldecode((string) $name);
+        $items = $this->repo->getByAuthor($authorName);
+        $title = 'Penulis: ' . $authorName;
 
         $this->view('public/telusuri/results', [
             'title' => $title,
             'items' => $items,
             'seo'   => [
                 'title'       => $title . ' | ' . $appName,
-                'description' => 'Daftar dokumen oleh ' . urldecode($name) . ' di ' . $appName . '.',
-                'canonical'   => $base . '/telusuri/author/' . rawurlencode($name),
+                'description' => 'Daftar dokumen oleh ' . $authorName . ' di ' . $appName . '.',
+                'canonical'   => $base . '/telusuri/author/' . rawurlencode($authorName),
                 'robots'      => 'noindex,follow',
             ],
         ]);
@@ -251,8 +252,8 @@ class TelusuriController extends Controller
         $this->view('public/telusuri/jenis_karya', [
             'items' => $items,
             'seo'   => [
-                'title'       => 'Jenis Karya | ' . $appName,
-                'description' => 'Telusuri dokumen berdasarkan jenis karya di ' . $appName . '.',
+                'title'       => 'Jenis Publikasi | ' . $appName,
+                'description' => 'Telusuri dokumen berdasarkan jenis publikasi di ' . $appName . '.',
                 'canonical'   => $base . '/telusuri/jenis-karya',
             ],
         ]);
@@ -264,16 +265,18 @@ class TelusuriController extends Controller
         $appName = $config['app_name'] ?? 'Sistem Informasi Repository Institut Agama Islam Hasan Jufri';
         $base    = rtrim($config['base_url'] ?? '', '/');
 
-        $items = $this->repo->getByJenisKarya($jenis);
-        $title = ucwords(str_replace('-', ' ', $jenis));
+        $jenisValue = urldecode((string) $jenis);
+        $items = $this->repo->getByJenisKarya($jenisValue);
+        $title = ucwords(str_replace(['-', '_'], ' ', $jenisValue));
 
         $this->view('public/telusuri/results', [
-            'jenis' => $jenis,
+            'title' => 'Jenis Publikasi: ' . $title,
+            'jenis' => $jenisValue,
             'items' => $items,
             'seo'   => [
-                'title'       => 'Jenis Karya ' . $title . ' | ' . $appName,
-                'description' => 'Kumpulan dokumen dengan jenis karya ' . $title . ' di ' . $appName . '.',
-                'canonical'   => $base . '/telusuri/jenis-karya/' . rawurlencode($jenis),
+                'title'       => 'Jenis Publikasi ' . $title . ' | ' . $appName,
+                'description' => 'Kumpulan dokumen dengan jenis publikasi ' . $title . ' di ' . $appName . '.',
+                'canonical'   => $base . '/telusuri/jenis-karya/' . rawurlencode($jenisValue),
             ],
         ]);
     }

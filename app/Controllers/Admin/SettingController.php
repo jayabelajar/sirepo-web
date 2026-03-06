@@ -12,6 +12,17 @@ use App\Core\Helpers\ActivityLogger;
 
 class SettingController extends Controller
 {
+    private function panelPrefix(): string
+    {
+        $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
+        return strpos($path, '/developer') === 0 ? '/developer' : '/admin';
+    }
+
+    private function settingsPath(): string
+    {
+        return $this->panelPrefix() . '/settings';
+    }
+
     private function headerActivities(): array
     {
         $db = Database::getConnection();
@@ -34,17 +45,19 @@ class SettingController extends Controller
 
     public function index()
     {
-        $admin = Auth::checkAdmin();
+        $account = Auth::checkAdmin();
+        $panelPrefix = $this->panelPrefix();
         $settingModel = new Setting();
         $setting = $settingModel->get();
 
         return $this->view('admin/setting', [
-            'admin'      => $admin,
+            'admin'      => $account,
             'setting'    => $setting,
             'csrf'       => Csrf::token(),
             'header_activities' => $this->headerActivities(),
+            'panel_prefix' => $panelPrefix,
             'breadcrumb' => [
-                ['label' => 'Dashboard', 'url' => '/admin/dashboard'],
+                ['label' => 'Dashboard', 'url' => $panelPrefix . '/dashboard'],
                 ['label' => 'Pengaturan'],
             ],
         ], 'admin');
@@ -52,26 +65,28 @@ class SettingController extends Controller
 
     public function maintenance()
     {
-        Auth::checkAdmin();
+        $account = Auth::checkAdmin();
+        $settingsPath = $this->settingsPath();
         Sanitizer::cleanRequest();
 
         if (!Csrf::check($_POST['csrf_token'] ?? '')) {
             $_SESSION['flash_error'] = 'Sesi kadaluarsa.';
-            return $this->redirect('/admin/settings');
+            return $this->redirect($settingsPath);
         }
 
         $on = isset($_POST['maintenance']) && $_POST['maintenance'] == '1';
         $settingModel = new Setting();
         $settingModel->updateMaintenance($on);
-        ActivityLogger::log($_SESSION['admin']['id'] ?? null, 'maintenance_toggle', 'settings', null, $on ? 'Aktifkan maintenance' : 'Nonaktifkan maintenance');
+        ActivityLogger::log($account['id'] ?? null, 'maintenance_toggle', 'settings', null, $on ? 'Aktifkan maintenance' : 'Nonaktifkan maintenance');
 
         $_SESSION['flash_success'] = 'Pengaturan maintenance diperbarui.';
-        return $this->redirect('/admin/settings');
+        return $this->redirect($settingsPath);
     }
 
     public function backup()
     {
-        Auth::checkAdmin();
+        $account = Auth::checkAdmin();
+        $settingsPath = $this->settingsPath();
         $config = require __DIR__ . '/../../../config/config.php';
         $dbCfg = $config['database'] ?? [];
         $host  = $dbCfg['host'] ?? '127.0.0.1';
@@ -83,7 +98,7 @@ class SettingController extends Controller
         $mysqli = @new \mysqli($host, $user, $pass, $name, (int) $port);
         if ($mysqli->connect_error) {
             $_SESSION['flash_error'] = 'Koneksi database gagal: ' . $mysqli->connect_error;
-            return $this->redirect('/admin/settings');
+            return $this->redirect($settingsPath);
         }
         $mysqli->set_charset('utf8mb4');
 
@@ -94,7 +109,7 @@ class SettingController extends Controller
         $tablesRes = $mysqli->query("SHOW TABLES");
         if (!$tablesRes) {
             $_SESSION['flash_error'] = 'Gagal mengambil daftar tabel: ' . $mysqli->error;
-            return $this->redirect('/admin/settings');
+            return $this->redirect($settingsPath);
         }
 
         while ($row = $tablesRes->fetch_array(MYSQLI_NUM)) {
@@ -145,7 +160,7 @@ class SettingController extends Controller
         $mysqli->close();
 
         $filename = 'backup-' . $name . '-' . date('Ymd-His') . '.sql';
-        ActivityLogger::log($_SESSION['admin']['id'] ?? null, 'backup_db', 'settings', null, 'Unduh backup database');
+        ActivityLogger::log($account['id'] ?? null, 'backup_db', 'settings', null, 'Unduh backup database');
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/sql');

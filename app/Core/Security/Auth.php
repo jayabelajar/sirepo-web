@@ -151,9 +151,11 @@ class Auth
     public static function logoutAdmin(): void
     {
         self::start();
+        $role = $_SESSION['admin']['role'] ?? 'admin';
         unset($_SESSION['admin']);
         session_destroy();
-        header('Location: ' . self::baseUrl() . '/login/admin');
+        $target = $role === 'developer' ? '/login/developer' : '/login/admin';
+        header('Location: ' . self::baseUrl() . $target);
         exit;
     }
 
@@ -171,10 +173,10 @@ class Auth
 
         $userModel = new User();
         $user      = null;
-        $isAdmin   = ($role === 'admin');
+        $isPrivileged = in_array($role, ['admin', 'developer'], true);
         $throttleKey = 'login_' . $role . '_' . hash('sha256', ($identifier) . '|' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
-        $maxAttempts = $isAdmin ? 5 : 7;
-        $banSeconds  = $isAdmin ? 15 * 60 : 10 * 60;
+        $maxAttempts = $isPrivileged ? 5 : 7;
+        $banSeconds  = $isPrivileged ? 15 * 60 : 10 * 60;
 
         if (!Throttle::allow($throttleKey, $maxAttempts, $banSeconds)) {
             return ['success' => false, 'reason' => 'throttled'];
@@ -190,6 +192,9 @@ class Auth
             case 'admin':
                 $user = $userModel->findAdmin($identifier);
                 break;
+            case 'developer':
+                $user = $userModel->findDeveloper($identifier);
+                break;
             default:
                 return ['success' => false, 'reason' => 'invalid_role'];
         }
@@ -198,7 +203,7 @@ class Auth
             return ['success' => false, 'reason' => 'not_found'];
         }
 
-        if ($isAdmin && $userModel->isBanned($user)) {
+        if ($isPrivileged && $userModel->isBanned($user)) {
             return [
                 'success'       => false,
                 'reason'        => 'banned',
@@ -221,14 +226,14 @@ class Auth
         }
 
         if (!$validPassword) {
-            if ($isAdmin) {
+            if ($isPrivileged) {
                 $userModel->incrementFailedAttempts((int) $user['id']);
             }
             Throttle::hit($throttleKey, $maxAttempts, $banSeconds);
             return ['success' => false, 'reason' => 'invalid_password'];
         }
 
-        if ($isAdmin) {
+        if ($isPrivileged) {
             $userModel->resetLoginAttempts((int) $user['id']);
         }
 

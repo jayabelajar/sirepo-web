@@ -35,14 +35,46 @@ $mapUser = static function ($u): array {
     return ['name' => trim($name) ?: 'Pengguna', 'code' => $code];
 };
 
-$authorUsers  = array_map($mapUser, $authors ?? []);
-$advisorUsers = array_map($mapUser, $advisors ?? []);
+$authorUsers   = array_map($mapUser, $authors ?? []);
+$advisorUsers  = array_map($mapUser, $advisors ?? []);
 $examinerUsers = array_map($mapUser, $examiners ?? []);
+
+$fallbackPenulis = [];
+if (empty($authorUsers)) {
+    $legacyPrimary = preg_split('/\s*[,;|]\s*/', (string)($repo['author'] ?? '')) ?: [];
+    $legacyPrimary = array_values(array_filter(array_map('trim', $legacyPrimary), static fn($name) => $name !== ''));
+    foreach ($legacyPrimary as $name) {
+        $fallbackPenulis[] = ['name' => $name, 'code' => ''];
+    }
+
+    $legacySecondary = preg_split('/\s*[,;|]\s*/', (string)($repo['sub_author'] ?? '')) ?: [];
+    $legacySecondary = array_values(array_filter(array_map('trim', $legacySecondary), static fn($name) => $name !== ''));
+    foreach ($legacySecondary as $name) {
+        $fallbackPenulis[] = ['name' => $name, 'code' => ''];
+    }
+}
+
+$penulisUsers = !empty($authorUsers) ? $authorUsers : $fallbackPenulis;
+$penulisOrdinalLabel = static function (int $index): string {
+    $labels = [
+        1 => 'Pertama',
+        2 => 'Kedua',
+        3 => 'Ketiga',
+        4 => 'Keempat',
+        5 => 'Kelima',
+        6 => 'Keenam',
+        7 => 'Ketujuh',
+        8 => 'Kedelapan',
+        9 => 'Kesembilan',
+        10 => 'Kesepuluh',
+    ];
+    return $labels[$index] ?? ('Ke-' . $index);
+};
 
 // --- SEO SCHEMA (sanitasi untuk JSON-LD) ---
 $titleSafe    = strip_tags($repo['judul'] ?? 'Dokumen Akademik');
 $abstractSafe = strip_tags($repo['abstrak'] ?? '');
-$authorsSafe  = array_map(fn($a) => ["@type" => "Person", "name" => strip_tags($a['name'] ?? '')], $authorUsers);
+$authorsSafe  = array_map(fn($a) => ["@type" => "Person", "name" => strip_tags($a['name'] ?? '')], $penulisUsers);
 $schemaData = [
     "@context" => "https://schema.org",
     "@type" => "ScholarlyArticle",
@@ -57,7 +89,7 @@ $schemaData = [
 
 <div class="min-h-screen bg-slate-50 text-slate-800">
 
-    <header class="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white pb-20 md:pb-28 overflow-hidden">
+    <header class="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white pb-20 overflow-hidden">
         
         <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
 
@@ -68,31 +100,39 @@ $schemaData = [
                 <span>/</span>
                 <a href="<?= $base_url ?>/telusuri" class="hover:text-white transition-colors">Repositori</a>
                 <span>/</span>
-                <span class="text-white truncate max-w-[200px]"><?= e($jenisKarya) ?></span>
+                <span class="text-white truncate max-w-[260px]"><?= e($repo['judul'] ?? 'Detail Repository') ?></span>
             </nav>
 
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="px-2.5 py-1 rounded bg-emerald-700/50 border border-emerald-500/30 text-emerald-50 text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm">
-                    <?= e($jenisKarya) ?>
-                </span>
-                <?php if (!empty($repo['prodi'])): ?>
-                    <span class="px-2.5 py-1 rounded bg-white/10 border border-white/20 text-white text-[11px] font-semibold backdrop-blur-sm">
-                        <?= e($repo['prodi']) ?>
-                    </span>
-                <?php endif; ?>
-                <span class="flex items-center gap-1.5 text-emerald-100/90 text-xs font-medium ml-1">
-                    <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <div class="mb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+                <span class="inline-flex items-center gap-1.5 rounded border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white sm:text-xs">
+                    <svg class="h-4 w-4 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <?= e($publishedAt) ?>
                 </span>
+
+                <span class="inline-flex items-center rounded border border-emerald-500/30 bg-emerald-700/50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-50 sm:text-xs">
+                    <?= e($jenisKarya) ?>
+                </span>
+
+                <?php if (!empty($repo['prodi'])): ?>
+                    <span class="inline-flex max-w-full items-center rounded border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white sm:text-xs">
+                        <span class="truncate"><?= e($repo['prodi']) ?></span>
+                    </span>
+                <?php endif; ?>
+
+                <?php if (!empty($repo['mata_kuliah'])): ?>
+                    <span class="inline-flex max-w-full items-center rounded border border-white/20 bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white sm:text-xs">
+                        <span class="truncate"><?= e($repo['mata_kuliah']) ?></span>
+                    </span>
+                <?php endif; ?>
             </div>
 
             <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-6 tracking-tight max-w-4xl">
                 <?= e($repo['judul'] ?? 'Judul Dokumen') ?>
             </h1>
 
-            <?php if (!empty($authorUsers)): ?>
+            <?php if (!empty($penulisUsers)): ?>
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <?php foreach ($authorUsers as $au): ?>
+                    <?php foreach ($penulisUsers as $idx => $au): ?>
                         <div class="flex items-center gap-2 group">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                             
@@ -113,7 +153,7 @@ $schemaData = [
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 md:-mt-20 relative z-20 pb-12">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 md:-mt-20 relative z-20 pb-12">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
 
             <article class="lg:col-span-2 bg-white rounded-xl shadow-lg shadow-slate-200/50 p-6 md:p-8 border border-slate-200">
@@ -172,6 +212,28 @@ $schemaData = [
                                 <?= !empty($repo['mata_kuliah']) ? e($repo['mata_kuliah']) : '-' ?>
                             </dd>
                         </div>
+
+                        <?php if (!empty($penulisUsers)): ?>
+                            <?php foreach ($penulisUsers as $idx => $penulis): ?>
+                                <?php $order = $idx + 1; ?>
+                                <div class="group border-t border-slate-50 pt-3">
+                                    <dt class="text-[10px] font-bold text-slate-400 uppercase mb-1">Penulis <?= e($penulisOrdinalLabel($order)) ?></dt>
+                                    <dd>
+                                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                                            <div class="text-sm font-bold text-slate-800"><?= e($penulis['name']) ?></div>
+                                            <?php if (!empty($penulis['code'])): ?>
+                                                <div class="text-[10px] text-emerald-600 font-mono mt-0.5"><?= e($penulis['code']) ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </dd>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="group border-t border-slate-50 pt-3">
+                                <dt class="text-[10px] font-bold text-slate-400 uppercase mb-1">Penulis</dt>
+                                <dd><span class="text-sm text-slate-800">-</span></dd>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="group border-t border-slate-50 pt-3">
                             <dt class="text-[10px] font-bold text-slate-400 uppercase mb-1">Pembimbing</dt>

@@ -8,6 +8,11 @@ class MataKuliah extends Model
 {
     protected string $table = 'mata_kuliah';
 
+    public function find(int $id): ?array
+    {
+        return $this->fetch("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1", ['id' => $id]);
+    }
+
     public function getAll(string $search = '', string $sort = 'asc', int $limit = 10, int $offset = 0)
     {
         $direction = strtolower($sort) === 'desc' ? 'DESC' : 'ASC';

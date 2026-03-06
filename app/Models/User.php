@@ -64,6 +64,19 @@ class User extends Model
         ])->fetch();
     }
 
+    public function findDeveloper(string $value)
+    {
+        $sql = "SELECT * FROM users
+                WHERE role = 'developer'
+                AND (email = :email OR username = :username)
+                LIMIT 1";
+
+        return $this->query($sql, [
+            'email'    => $value,
+            'username' => $value,
+        ])->fetch();
+    }
+
     public function getAllOrdered(string $search = '', ?string $role = null, int $limit = 10, int $offset = 0): array
     {
         $sql = "SELECT * FROM users";
@@ -82,7 +95,7 @@ class User extends Model
                 's_nidn'    => '%' . $search . '%',
             ];
         }
-        if ($role !== null && in_array($role, ['admin','dosen','mahasiswa'], true)) {
+        if ($role !== null && in_array($role, ['admin','developer','dosen','mahasiswa'], true)) {
             $sql .= $search === '' ? " WHERE role = :role" : " AND role = :role";
             $params['role'] = $role;
         }
@@ -111,7 +124,7 @@ class User extends Model
                 's_nidn'    => '%' . $search . '%',
             ];
         }
-        if ($role !== null && in_array($role, ['admin','dosen','mahasiswa'], true)) {
+        if ($role !== null && in_array($role, ['admin','developer','dosen','mahasiswa'], true)) {
             $sql .= $search === '' ? " WHERE role = :role" : " AND role = :role";
             $params['role'] = $role;
         }
@@ -183,7 +196,24 @@ class User extends Model
             $params[$key] = $id;
         }
         $sql = "SELECT * FROM {$this->table} WHERE id IN (" . implode(',', $placeholders) . ")";
-        return $this->query($sql, $params)->fetchAll();
+        $rows = $this->query($sql, $params)->fetchAll();
+        if (empty($rows)) {
+            return [];
+        }
+
+        $rowsById = [];
+        foreach ($rows as $row) {
+            $rowsById[(int)($row['id'] ?? 0)] = $row;
+        }
+
+        $ordered = [];
+        foreach ($ids as $id) {
+            if (isset($rowsById[$id])) {
+                $ordered[] = $rowsById[$id];
+            }
+        }
+
+        return $ordered;
     }
 
     public function create(array $data): bool

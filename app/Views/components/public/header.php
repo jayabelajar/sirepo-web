@@ -6,8 +6,10 @@
         'tagline'   => 'Sistem Informasi Repositori',
         'subtitle'  => 'Institut Agama Islam Hasan Jufri',
         'logo_alt'  => 'Logo Sistem Informasi Repository',
-        'logo_path' => '/assets/img/image.png',
+        'logo_path' => '/assets/img/favicon.svg',
     ], $brand ?? []);
+    $brandTaglineUpper = strtoupper((string) ($brand['tagline'] ?? ''));
+    $brandSubtitleUpper = strtoupper((string) ($brand['subtitle'] ?? ''));
 
     $buildUrl = static function (string $path) use ($baseHref): string {
         if (preg_match('~^https?://~', $path)) {
@@ -27,20 +29,19 @@
         }
     };
 ?>
-<header class="sticky top-0 z-40 border-b border-slate-100 bg-white/90 backdrop-blur shadow-sm">
+<header class="sticky top-0 z-40 border-b border-slate-100 bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between py-4">
-            <a href="<?= $buildUrl('/'); ?>" class="flex items-center gap-3">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+            <a href="<?= $buildUrl('/'); ?>" class="flex min-w-0 items-center gap-2 pr-2 sm:gap-4">
+                <div class="w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center">
                     <img src="<?= $baseHref . $brand['logo_path']; ?>" alt="<?= e($brand['logo_alt']); ?>" class="w-full h-full object-contain" />
                 </div>
-                <div class="leading-tight">
-                    <p class="text-[11px] uppercase tracking-[0.25em] text-slate-500 font-semibold">
-                        <?= e($brand['tagline']); ?>
+                <div class="min-w-0 leading-tight">
+                    <p class="text-[10px] md:text-xs uppercase tracking-wide text-slate-500 font-bold">
+                        <?= e($brandTaglineUpper); ?>
                     </p>
-                    <p class="text-sm sm:text-base font-bold text-slate-900">
-                        <br class="hidden lg:block" />
-                        <span class="text-emerald-600"><?= e($brand['subtitle']); ?></span>
+                    <p class="text-[11px] sm:text-sm md:text-base font-bold text-slate-900 leading-tight">
+                        <span class="text-emerald-600"><?= e($brandSubtitleUpper); ?></span>
                     </p>
                 </div>
             </a>
@@ -72,9 +73,6 @@
             </nav>
 
             <div class="flex items-center gap-1 lg:hidden">
-                <a href="<?= $buildUrl('/telusuri/'); ?>" class="p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors" aria-label="Cari Repository">
-                    <?= $renderIcon('search', 'w-6 h-6'); ?>
-                </a>
                 <button id="menuBtn" class="p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors" aria-label="Menu">
                     <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16" />

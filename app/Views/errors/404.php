@@ -11,7 +11,7 @@ $page_title = '404 - Halaman Tidak Ditemukan | ' . $app_name;
     <title><?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
     <meta name="robots" content="noindex,follow">
     <meta name="description" content="Halaman yang Anda cari tidak ditemukan di <?= htmlspecialchars($app_name, ENT_QUOTES, 'UTF-8'); ?>.">
-    <link rel="stylesheet" href="<?= $base_url; ?>/assets/css/tailwind.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
     </style>

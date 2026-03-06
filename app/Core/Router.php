@@ -71,11 +71,12 @@ class Router
         // ======================
         foreach (self::$routes[$method] as $route => $callback) {
 
-            // ubah {param} menjadi regex
-            // mendukung: angka, huruf, dash, underscore, titik
+            // Ubah {param} menjadi regex segment path dinamis.
+            // Izinkan semua karakter kecuali "/" agar aman untuk nilai
+            // yang ter-encode seperti spasi (%20) atau tanda plus (+).
             $pattern = preg_replace(
                 '/\{([a-zA-Z0-9_]+)\}/',
-                '([a-zA-Z0-9\-\_\.]+)',
+                '([^\/]+)',
                 $route
             );
 

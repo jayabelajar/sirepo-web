@@ -17,3 +17,7 @@
 [DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
 [DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
 [DB_FAIL] host=localhost port=3306 db=root user=sirepov1 dsn=mysql:host=localhost;port=3306;dbname=root;charset=utf8mb4 error=SQLSTATE[HY000] [1524] Plugin 'mysql_native_password' is not loaded
+[DB_FAIL] host=localhost port=3306 db=sirepov1 user=root dsn=mysql:host=localhost;port=3306;dbname=sirepov1;charset=utf8mb4 error=SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[DB_FAIL] host=localhost port=3306 db=sirepov1 user=root dsn=mysql:host=localhost;port=3306;dbname=sirepov1;charset=utf8mb4 error=SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[DB_FAIL] host=localhost port=3306 db=sirepov1 user=root dsn=mysql:host=localhost;port=3306;dbname=sirepov1;charset=utf8mb4 error=SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[DB_FAIL] host=localhost port=3306 db=sirepov1 user=root dsn=mysql:host=localhost;port=3306;dbname=sirepov1;charset=utf8mb4 error=SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it

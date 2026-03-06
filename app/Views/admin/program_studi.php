@@ -102,51 +102,74 @@ $base = rtrim($base_url, '/');
     </div>
 </div>
 
-<div id='modalProdi' class='fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center px-4'>
-    <div class='bg-white w-full max-w-xl rounded-2xl shadow-2xl p-6 md:p-8 relative'>
-        <button id='closeModalProdi' class='absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition'>
-            <span class='sr-only'>Tutup</span>
-            <svg class='w-5 h-5' viewBox='0 0 24 24' fill='none' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 6l12 12M6 18L18 6'/></svg>
-        </button>
-        <div class='flex items-start gap-3 mb-4'>
-            <div class='w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center'>
-                <svg class='w-5 h-5' viewBox='0 0 24 24' fill='none' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 5v14m-7-7h14'/></svg>
+<div id='drawerProdi' class='fixed inset-0 z-50 hidden'>
+    <div id='drawerProdiOverlay' class='absolute inset-0 bg-black/40 backdrop-blur-sm'></div>
+    <aside id='drawerProdiPanel' class='absolute inset-y-0 right-0 w-full max-w-xl bg-white border-l border-slate-200 shadow-2xl overflow-y-auto' style='transform: translateX(100%); transition: transform 0.2s ease-out;'>
+        <div class='p-6 md:p-8'>
+            <div class='flex items-start justify-between gap-3 mb-4'>
+                <div class='flex items-start gap-3'>
+                    <div class='w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center'>
+                        <svg class='w-5 h-5' viewBox='0 0 24 24' fill='none' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 5v14m-7-7h14'/></svg>
+                    </div>
+                    <div>
+                        <h3 id='modalTitle' class='text-lg font-semibold text-slate-900'>Tambah Program Studi</h3>
+                        <p class='text-sm text-slate-500'>Masukkan nama program studi secara lengkap.</p>
+                    </div>
+                </div>
+                <button id='closeModalProdi' class='text-slate-400 hover:text-slate-600 transition'>
+                    <span class='sr-only'>Tutup</span>
+                    <svg class='w-5 h-5' viewBox='0 0 24 24' fill='none' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 6l12 12M6 18L18 6'/></svg>
+                </button>
             </div>
-            <div>
-                <h3 id='modalTitle' class='text-lg font-semibold text-slate-900'>Tambah Program Studi</h3>
-                <p class='text-sm text-slate-500'>Masukkan nama program studi secara lengkap.</p>
-            </div>
-        </div>
 
-        <form id='formProdi' method='POST' action='<?= $base ?>/admin/program-studi' class='space-y-4'>
-            <input type='hidden' name='csrf_token' value='<?= e($csrf) ?>'>
-            <div class='space-y-2'>
-                <label class='text-sm font-medium text-slate-700'>Nama Program Studi</label>
-                <input type='text' name='nama_program_studi' required class='w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none'>
-            </div>
-            <div class='flex flex-col sm:flex-row justify-end gap-2 pt-2'>
-                <button type='button' id='btnCancelProdi' class='px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50'>Batal</button>
-                <button class='px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 shadow-sm'>Simpan</button>
-            </div>
-        </form>
-    </div>
+            <form id='formProdi' method='POST' action='<?= $base ?>/admin/program-studi' class='space-y-4'>
+                <input type='hidden' name='csrf_token' value='<?= e($csrf) ?>'>
+                <div class='space-y-2'>
+                    <label class='text-sm font-medium text-slate-700'>Nama Program Studi</label>
+                    <input type='text' name='nama_program_studi' required class='w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none'>
+                </div>
+                <div class='flex flex-col sm:flex-row justify-end gap-2 pt-2'>
+                    <button type='button' id='btnCancelProdi' class='px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50'>Batal</button>
+                    <button type='submit' id='btnSaveAndNewProdi' name='save_and_new' value='1' class='px-4 py-2.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-semibold hover:bg-emerald-100 transition-colors'>Simpan &amp; Tambah Lagi</button>
+                    <button class='px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 shadow-sm'>Simpan</button>
+                </div>
+            </form>
+        </div>
+    </aside>
 </div>
 
 <script>
 (() => {
-    const modal = document.getElementById('modalProdi');
+    const drawer = document.getElementById('drawerProdi');
+    const panel = document.getElementById('drawerProdiPanel');
+    const overlay = document.getElementById('drawerProdiOverlay');
     const btnAdd = document.getElementById('btnAddProdi');
     const btnClose = document.getElementById('closeModalProdi');
     const btnCancel = document.getElementById('btnCancelProdi');
+    const btnSaveAndNew = document.getElementById('btnSaveAndNewProdi');
     const form = document.getElementById('formProdi');
     const title = document.getElementById('modalTitle');
 
-    const openModal = () => { modal.classList.remove('hidden'); modal.classList.add('flex'); };
-    const closeModal = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); resetForm(); };
+    const openModal = () => {
+        if (!drawer || !panel) return;
+        drawer.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            panel.style.transform = 'translateX(0)';
+        });
+    };
+    const closeModal = () => {
+        if (!drawer || !panel) return;
+        panel.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            drawer.classList.add('hidden');
+            resetForm();
+        }, 200);
+    };
     const resetForm = () => {
         form.reset();
         form.action = '<?= $base ?>/admin/program-studi';
         title.textContent = 'Tambah Program Studi';
+        btnSaveAndNew?.classList.remove('hidden');
     };
 
     btnAdd?.addEventListener('click', () => {
@@ -155,7 +178,12 @@ $base = rtrim($base_url, '/');
     });
     btnClose?.addEventListener('click', closeModal);
     btnCancel?.addEventListener('click', closeModal);
-    modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    overlay?.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer && !drawer.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
 
     document.querySelectorAll('.btnEdit').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -163,8 +191,18 @@ $base = rtrim($base_url, '/');
             form.action = '<?= $base ?>/admin/program-studi/' + id + '/update';
             form.nama_program_studi.value = btn.dataset.nama || '';
             title.textContent = 'Edit Program Studi';
+            btnSaveAndNew?.classList.add('hidden');
             openModal();
         });
     });
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('open') === 'create') {
+        resetForm();
+        openModal();
+        params.delete('open');
+        const next = params.toString();
+        window.history.replaceState({}, '', window.location.pathname + (next ? ('?' + next) : ''));
+    }
 })();
 </script>

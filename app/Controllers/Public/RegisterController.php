@@ -16,7 +16,8 @@ class RegisterController extends Controller
     public function index()
     {
         if (isset($_SESSION['admin'])) {
-            return $this->redirect('/admin/dashboard');
+            $role = $_SESSION['admin']['role'] ?? 'admin';
+            return $this->redirect($role === 'developer' ? '/developer/dashboard' : '/admin/dashboard');
         }
         if (isset($_SESSION['dosen'])) {
             return $this->redirect('/dosen/dashboard');

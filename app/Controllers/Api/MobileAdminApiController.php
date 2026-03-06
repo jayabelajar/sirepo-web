@@ -84,9 +84,18 @@ class MobileAdminApiController extends BaseApiController
         $filters = [
             'q'                => $this->sanitizeString($_GET['q'] ?? '', 150),
             'tahun'            => isset($_GET['tahun']) ? (int) $_GET['tahun'] : null,
-            'program_studi_id' => isset($_GET['prodi']) ? (int) $_GET['prodi'] : null,
-            'mata_kuliah_id'   => isset($_GET['mk']) ? (int) $_GET['mk'] : null,
+            'program_studi_id' => isset($_GET['prodi'])
+                ? (int) $_GET['prodi']
+                : (isset($_GET['prodi_id'])
+                    ? (int) $_GET['prodi_id']
+                    : (isset($_GET['program_studi_id']) ? (int) $_GET['program_studi_id'] : null)),
+            'mata_kuliah_id'   => isset($_GET['mk'])
+                ? (int) $_GET['mk']
+                : (isset($_GET['mk_id'])
+                    ? (int) $_GET['mk_id']
+                    : (isset($_GET['mata_kuliah_id']) ? (int) $_GET['mata_kuliah_id'] : null)),
             'jenis_karya'      => $this->sanitizeString($_GET['jenis'] ?? ($_GET['jenis_karya'] ?? ''), 50),
+            'author'           => $this->sanitizeString($_GET['author'] ?? '', 150),
         ];
 
         $items = $this->repo->filterByUser((int) $user['id'], $filters, $perPage, $offset);

@@ -4,6 +4,12 @@ $cy_labels = $chart_year_labels ?? [];
 $cy_data   = $chart_year_data ?? [];
 $cj_labels = $chart_jenis_labels ?? [];
 $cj_data   = $chart_jenis_data ?? [];
+$panelPrefix = rtrim($panel_prefix ?? '/admin', '/');
+$panelRoleLabel = $panel_role_label ?? 'Admin';
+$panelLogsUrl = $panel_logs_url ?? ($panelPrefix . '/logs');
+$panelCreateRepoUrl = $panel_create_repo_url ?? ($panelPrefix . '/repository/create');
+$panelShowCreateRepo = $panel_show_create_repo ?? true;
+$dashboardHeading = $dashboard_heading ?? ('Dashboard ' . $panelRoleLabel);
 
 $jam = (new DateTime('now', new DateTimeZone('Asia/Jakarta')))->format('H');
 if ($jam >= 5 && $jam < 12) {
@@ -42,21 +48,23 @@ $waveIcon = '&#128075;'; // wave emoji as entity to keep ASCII-safe
                             <span aria-hidden="true"><?= $waveIcon ?></span>
                         </p>
                         <span class="inline-flex items-center text-[11px] md:text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full leading-none w-fit">
-                            <?= $adminName ?> &middot; Admin
+                            <?= $adminName ?> &middot; <?= e($panelRoleLabel) ?>
                         </span>
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800">Dashboard Admin</h1>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800"><?= e($dashboardHeading) ?></h1>
                     <p class="text-slate-500 mt-2 max-w-xl text-sm leading-relaxed">
                         Selamat datang di panel kontrol <strong>SIREPO</strong>. Pantau statistik repository dan aktivitas sistem secara real-time.
                     </p>
                 </div>
             </div>
-            <a href="<?= rtrim($base_url, '/') ?>/admin/repository/create" class="btn-cta inline-flex items-center justify-center w-full md:w-auto px-5 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-200 transition-transform active:scale-95 text-sm">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Upload Baru
-            </a>
+            <?php if ($panelShowCreateRepo): ?>
+                <a href="<?= rtrim($base_url, '/') . $panelCreateRepoUrl ?>" class="btn-cta inline-flex items-center justify-center w-full md:w-auto px-5 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-200 transition-transform active:scale-95 text-sm">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Upload Baru
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -182,7 +190,7 @@ $waveIcon = '&#128075;'; // wave emoji as entity to keep ASCII-safe
                     </div>
                      <div class="p-4 border-t border-slate-100 flex justify-between text-xs text-slate-500 flex-shrink-0">
                         <span></span>
-                        <a href="<?= rtrim($base_url, '/') ?>/admin/logs" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Lihat Semua Log &rarr;</a>
+                        <a href="<?= rtrim($base_url, '/') . $panelLogsUrl ?>" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Lihat Semua Log &rarr;</a>
                     </div>
                 </div>
 
@@ -250,7 +258,7 @@ $waveIcon = '&#128075;'; // wave emoji as entity to keep ASCII-safe
             
             <div class="p-4 border-t border-slate-100 flex justify-between text-xs text-slate-500 flex-shrink-0">
                 <span></span>
-                <a href="<?= rtrim($base_url, '/') ?>/admin/logs" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Lihat Semua Log &rarr;</a>
+                <a href="<?= rtrim($base_url, '/') . $panelLogsUrl ?>" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline">Lihat Semua Log &rarr;</a>
             </div>
         </div>
 

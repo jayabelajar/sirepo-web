@@ -55,7 +55,7 @@ $selected_examiners = $selected_examiners ?? [];
             <p class="text-xs text-slate-400">Slug dibuat otomatis dari judul (maks 80 karakter).</p>
         </div>
 
-        <!-- JENIS / AUTHOR TEXT / TAHUN -->
+        <!-- JENIS / PENULIS UTAMA / TAHUN -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="space-y-2">
                 <label class="text-sm font-semibold text-slate-700">Jenis Karya</label>
@@ -69,11 +69,12 @@ $selected_examiners = $selected_examiners ?? [];
             </div>
 
             <div class="space-y-2">
-                <label class="text-sm font-semibold text-slate-700">Penulis</label>
-                <input type="text" name="author" value="<?= e($item['author'] ?? ($dosen['nama'] ?? '')) ?>" required
-                       placeholder="Contoh: Budi Santoso"
-                       class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-700 placeholder:text-slate-400">
-                <p class="text-xs text-slate-400">Penulis versi teks. Tandai mahasiswa ada di bagian "Tandai Orang".</p>
+                <label class="text-sm font-semibold text-slate-700">Penulis Utama</label>
+                <input type="hidden" name="author" id="primaryAuthorName" value="<?= e($item['author'] ?? '') ?>" data-fallback="<?= e($item['author'] ?? '') ?>">
+                <input type="text" id="primaryAuthorPreview" value="<?= e($item['author'] ?? '') ?>" readonly
+                       placeholder="Pilih dari Tandai Penulis"
+                       class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-100 text-slate-700 cursor-not-allowed">
+                <p class="text-xs text-slate-400">Otomatis diambil dari penulis pertama yang ditandai dari database user.</p>
             </div>
 
             <div class="space-y-2">
@@ -129,7 +130,7 @@ $selected_examiners = $selected_examiners ?? [];
                 <div class="relative">
                     <button type="button" data-dd-btn="author" onclick="ddToggle('author')"
                             class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-left flex justify-between items-center">
-                        <span id="authorLabel" class="text-slate-500">Pilih mahasiswa...</span>
+                        <span id="authorLabel" class="text-slate-500">Pilih penulis...</span>
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -165,6 +166,7 @@ $selected_examiners = $selected_examiners ?? [];
                                         data-text="<?= e(mb_strtolower($txt)) ?>">
                                         <input type="checkbox" class="dd-author-checkbox mt-1" name="author_ids[]" value="<?= $id ?>"
                                             data-role="<?= $roleText ?>"
+                                            data-name="<?= e($nm) ?>"
                                             <?= $checked ? 'checked' : '' ?>
                                             onchange="ddSync('author')">
                                         <span class="text-sm text-slate-700"><?= e($txt) ?></span>
@@ -338,11 +340,38 @@ function ddSync(key) {
     });
 
   const placeholders = {
-    author: 'Pilih mahasiswa...',
+    author: 'Pilih penulis...',
     advisor: 'Pilih pembimbing...',
     examiner: 'Pilih penguji...',
   };
   label.textContent = picked.length ? picked.join(', ') : (placeholders[key] || 'Pilih...');
+
+  if (key === 'author') {
+    updatePrimaryAuthor();
+  }
+}
+
+function updatePrimaryAuthor() {
+  const hidden = document.getElementById('primaryAuthorName');
+  const preview = document.getElementById('primaryAuthorPreview');
+  if (!hidden || !preview) return;
+
+  const checked = document.querySelectorAll('.dd-author-checkbox:checked');
+  const fallback = (hidden.getAttribute('data-fallback') || '').trim();
+  let primaryName = '';
+
+  checked.forEach(cb => {
+    if (primaryName) return;
+    const candidate = (cb.getAttribute('data-name') || '').trim();
+    if (candidate) primaryName = candidate;
+  });
+
+  if (!primaryName) {
+    primaryName = fallback;
+  }
+
+  hidden.value = primaryName;
+  preview.value = primaryName;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

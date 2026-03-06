@@ -14,7 +14,8 @@ class AuthMahasiswaController extends Controller
     {
         // Jika sudah login sebagai role lain, arahkan sesuai role
         if (isset($_SESSION['admin'])) {
-            return $this->redirect('/admin/dashboard');
+            $role = $_SESSION['admin']['role'] ?? 'admin';
+            return $this->redirect($role === 'developer' ? '/developer/dashboard' : '/admin/dashboard');
         }
         if (isset($_SESSION['dosen'])) {
             return $this->redirect('/dosen/dashboard');
