@@ -18,7 +18,7 @@ class BaseApiController extends Controller
     public function __construct()
     {
         $this->config      = require __DIR__ . '/../../../config/config.php';
-        $this->tokenTtl    = 60 * 60 * 2; // 2 jam
+        $this->tokenTtl    = (int) ($this->config['api_token_ttl'] ?? (60 * 60 * 2)); // Default fallback 2 jam
         $this->tokenModel  = new ApiToken();
     }
 

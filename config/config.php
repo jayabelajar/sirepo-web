@@ -78,4 +78,7 @@ return [
         'description' => 'Repositori resmi karya ilmiah, tugas akhir, laporan, dan penelitian di Institut Agama Islam Hasan Jufri.',
         'keywords'    => 'repository, Institut Agama Islam Hasan Jufri, sirepo, skripsi, tesis, tugas akhir, penelitian, perpustakaan digital',
     ],
+
+    // API Token TTL (default: 4 bulan / 120 hari)
+    'api_token_ttl' => (int) $env('APP_API_TOKEN_TTL', 60 * 60 * 24 * 30 * 4),
 ];
