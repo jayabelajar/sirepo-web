@@ -92,7 +92,7 @@
             <p class="text-center sm:text-left">
                 &copy; <?= date('Y'); ?>
                 <a href="https://inhafi.ac.id" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:text-emerald-300 transition-colors">
-                    SIREPO INHAFI
+                    SIREPO INHAFI. 
                 </a>
                 All right reserved.
             </p>
