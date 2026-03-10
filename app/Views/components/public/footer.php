@@ -92,13 +92,13 @@
             <p class="text-center sm:text-left">
                 &copy; <?= date('Y'); ?>
                 <a href="https://inhafi.ac.id" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:text-emerald-300 transition-colors">
-                    Institut Agama Islam Hasan Jufri
-                </a>.
+                    SIREPO INHAFI
+                </a>
                 All right reserved.
             </p>
 
             <p class="text-center sm:text-right font-medium text-slate-300">
-               Developerd by
+               Developed by
                 <a href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-emerald-300 transition-colors">
                     VeritasDev
                 </a>
