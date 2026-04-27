@@ -38,12 +38,9 @@ class UploadService
 
         // Cek MIME-type dengan fallback jika finfo tidak aktif
         $mime = null;
-        if (function_exists('finfo_open')) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime  = $finfo ? finfo_file($finfo, $file['tmp_name']) : null;
-            if ($finfo) {
-                finfo_close($finfo);
-            }
+        if (class_exists('finfo')) {
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mime  = $finfo->file($file['tmp_name']) ?: null;
         } else {
             // Fallback sederhana jika finfo tidak ada
             $mime = $file['type'] ?? 'application/pdf';
