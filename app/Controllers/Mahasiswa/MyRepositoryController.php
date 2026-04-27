@@ -98,11 +98,12 @@ class MyRepositoryController extends Controller
 
         $fileName = null;
         if (isset($_FILES['file_pdf']) && $_FILES['file_pdf']['error'] === UPLOAD_ERR_OK) {
-            $ext = pathinfo($_FILES['file_pdf']['name'], PATHINFO_EXTENSION);
-            if (strtolower($ext) === 'pdf') {
-                $fileName = 'repo_' . time() . '_' . uniqid() . '.pdf';
-                $dest = __DIR__ . '/../../../public/assets/uploads/' . $fileName;
-                move_uploaded_file($_FILES['file_pdf']['tmp_name'], $dest);
+            try {
+                $uploader = new \App\Services\UploadService();
+                $fileName = $uploader->storePdf($_FILES['file_pdf']);
+            } catch (\RuntimeException $e) {
+                header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository/create?error=' . urlencode($e->getMessage()));
+                exit;
             }
         }
 
