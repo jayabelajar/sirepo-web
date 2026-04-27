@@ -14,7 +14,8 @@ class UploadService
         $this->maxSize = $maxSizeBytes;
 
         if (!is_dir($this->dir)) {
-            mkdir($this->dir, 0750, true);
+            // Gunakan 0755 agar lebih bersahabat dengan hosting
+            mkdir($this->dir, 0755, true);
         }
     }
 
@@ -35,16 +36,24 @@ class UploadService
             throw new \RuntimeException('Hanya boleh upload PDF, jangan aneh-aneh.');
         }
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime  = $finfo ? finfo_file($finfo, $file['tmp_name']) : null;
-        if ($finfo) {
-            finfo_close($finfo);
+        // Cek MIME-type dengan fallback jika finfo tidak aktif
+        $mime = null;
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime  = $finfo ? finfo_file($finfo, $file['tmp_name']) : null;
+            if ($finfo) {
+                finfo_close($finfo);
+            }
+        } else {
+            // Fallback sederhana jika finfo tidak ada
+            $mime = $file['type'] ?? 'application/pdf';
         }
-        if ($mime === false || ($mime !== null && !in_array($mime, $allowedMime, true))) {
+
+        if ($mime !== null && !in_array($mime, $allowedMime, true)) {
             throw new \RuntimeException('MIME file mencurigakan, pastikan PDF asli.');
         }
 
-        // Magic bytes check
+        // Magic bytes check (tetap dilakukan karena ini native PHP)
         $magic = file_get_contents($file['tmp_name'], false, null, 0, 5);
         if ($magic === false || strncmp($magic, '%PDF-', 5) !== 0) {
             throw new \RuntimeException('File tidak valid, hanya PDF yang diperbolehkan.');
@@ -54,10 +63,10 @@ class UploadService
         $target   = $this->dir . '/' . $safeName;
 
         if (!move_uploaded_file($file['tmp_name'], $target)) {
-            throw new \RuntimeException('Gagal menyimpan file.');
+            throw new \RuntimeException('Gagal menyimpan file ke folder storage. Pastikan folder storage dapat ditulis (writable).');
         }
 
-        @chmod($target, 0640);
+        @chmod($target, 0644);
 
         return $safeName;
     }

@@ -83,8 +83,7 @@ class MyRepositoryController extends Controller
         $keywords = trim($_POST['keywords'] ?? '');
 
         if (!$judul || !$jenis) {
-            header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository/create?error=Judul dan Jenis Karya wajib diisi');
-            exit;
+            return $this->redirect('/mahasiswa/my-repository/create?error=Judul dan Jenis Karya wajib diisi');
         }
 
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $judul)));
@@ -102,8 +101,7 @@ class MyRepositoryController extends Controller
                 $uploader = new \App\Services\UploadService();
                 $fileName = $uploader->storePdf($_FILES['file_pdf']);
             } catch (\RuntimeException $e) {
-                header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository/create?error=' . urlencode($e->getMessage()));
-                exit;
+                return $this->redirect('/mahasiswa/my-repository/create?error=' . urlencode($e->getMessage()));
             }
         }
 
@@ -140,26 +138,22 @@ class MyRepositoryController extends Controller
 
         ActivityLogger::log((int)$mhs['id'], 'REPOSITORY_UPLOAD', 'repository', $repoId, "Mengunggah repository mandiri: $judul");
 
-        header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository?success=Berhasil mengunggah. Menunggu review admin.');
-        exit;
+        return $this->redirect('/mahasiswa/my-repository?success=Berhasil mengunggah. Menunggu review admin.');
     }
 
     public function edit(int $id)
     {
-        header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository?error=Hanya admin yang dapat mengubah repository');
-        exit;
+        return $this->redirect('/mahasiswa/my-repository?error=Hanya admin yang dapat mengubah repository');
     }
 
     public function update(int $id)
     {
-        header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository?error=Hanya admin yang dapat mengubah repository');
-        exit;
+        return $this->redirect('/mahasiswa/my-repository?error=Hanya admin yang dapat mengubah repository');
     }
 
     public function delete(int $id)
     {
-        header('Location: ' . rtrim($_ENV['APP_BASE_URL'], '/') . '/mahasiswa/my-repository?error=Hanya admin yang dapat menghapus repository');
-        exit;
+        return $this->redirect('/mahasiswa/my-repository?error=Hanya admin yang dapat menghapus repository');
     }
 
 }
