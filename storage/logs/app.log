@@ -118,3 +118,150 @@ Trace: #0 C:\Users\Argeswara\Documents\Project\sirepov1\app\Core\Controller.php(
 #7 C:\Users\Argeswara\Documents\Project\sirepov1\public\index.php(59): App\Core\App->run()
 #8 {main}
 
+[2026-04-24 06:56:16] Call to undefined method App\Models\ProgramStudi::getAll() in D:\Project\sirepov1\app\Controllers\Mahasiswa\MyRepositoryController.php:55
+Request: GET /mahasiswa/my-repository/create
+Trace: #0 [internal function]: App\Controllers\Mahasiswa\MyRepositoryController->create()
+#1 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#2 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#3 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/my-r...')
+#4 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#5 {main}
+
+[2026-04-24 09:29:11] Call to undefined method App\Models\ProgramStudi::getAll() in D:\Project\sirepov1\app\Controllers\Mahasiswa\MyRepositoryController.php:55
+Request: GET /mahasiswa/my-repository/create
+Trace: #0 [internal function]: App\Controllers\Mahasiswa\MyRepositoryController->create()
+#1 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#2 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#3 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/my-r...')
+#4 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#5 {main}
+
+[2026-04-24 09:46:15] Call to undefined method App\Models\ActivityLog::log() in D:\Project\sirepov1\app\Controllers\Mahasiswa\MyRepositoryController.php:139
+Request: POST /mahasiswa/my-repository/store
+Trace: #0 [internal function]: App\Controllers\Mahasiswa\MyRepositoryController->store()
+#1 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#2 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#3 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('POST', '/mahasiswa/my-r...')
+#4 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#5 {main}
+
+[2026-04-24 09:57:30] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:57:33] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:57:35] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:57:37] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:57:41] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:58:01] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:58:05] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:59:54] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 09:59:56] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+
+[2026-04-24 10:02:51] SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #9 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'sirepov1.ru.role_in_repo' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by in D:\Project\sirepov1\app\Core\Model.php:18
+Request: GET /mahasiswa/dashboard
+Trace: #0 D:\Project\sirepov1\app\Core\Model.php(18): PDO->prepare('SELECT r.id, r....')
+#1 D:\Project\sirepov1\app\Models\Repository.php(399): App\Core\Model->query('SELECT r.id, r....', Array)
+#2 D:\Project\sirepov1\app\Controllers\Mahasiswa\DashboardController.php(21): App\Models\Repository->getForMahasiswa(26, 4)
+#3 [internal function]: App\Controllers\Mahasiswa\DashboardController->index()
+#4 D:\Project\sirepov1\app\Core\Router.php(141): call_user_func_array(Array, Array)
+#5 D:\Project\sirepov1\app\Core\Router.php(66): App\Core\Router->invoke(Array)
+#6 D:\Project\sirepov1\app\Core\App.php(11): App\Core\Router->dispatch('GET', '/mahasiswa/dash...')
+#7 D:\Project\sirepov1\public\index.php(59): App\Core\App->run()
+#8 {main}
+

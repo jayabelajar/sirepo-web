@@ -649,5 +649,87 @@
     })();
 </script>
 
+<!-- GLOBAL CUSTOM MODAL CONFIRMATION -->
+<div id="confirmModal" class="hidden fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div id="modalBackdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeConfirmModal()"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white dark:bg-slate-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-slate-100 dark:border-slate-800 animate-fade-in-up">
+            <div class="bg-white dark:bg-slate-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div id="modalIconBg" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-bold text-slate-800 dark:text-slate-100" id="modal-title">Konfirmasi</h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed" id="modalText">Deskripsi konfirmasi akan muncul di sini.</p>
+                        </div>
+                        <div id="modalInputContainer" class="mt-4 hidden">
+                            <label for="modalNote" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Catatan / Alasan (Opsional)</label>
+                            <textarea id="modalNote" name="note" rows="3" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all" placeholder="Tuliskan alasan penolakan atau catatan tambahan..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                <form id="modalForm" method="POST" class="inline">
+                    <input type="hidden" name="csrf_token" id="modalCsrf" value="">
+                    <button type="submit" id="modalConfirmBtn" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-5 py-2.5 text-sm font-bold text-white transition-all active:scale-95 sm:ml-3 sm:w-auto">
+                        Ya, Lanjutkan
+                    </button>
+                </form>
+                <button type="button" onclick="closeConfirmModal()" class="mt-3 w-full inline-flex justify-center rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm px-5 py-2.5 bg-white dark:bg-slate-800 text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all sm:mt-0 sm:ml-3 sm:w-auto">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openConfirmModal(action, title, text, btnClass, btnText, csrfToken, showInput = false) {
+    const modal = document.getElementById('confirmModal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalText = document.getElementById('modalText');
+    const modalForm = document.getElementById('modalForm');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const modalIconBg = document.getElementById('modalIconBg');
+    const modalCsrf = document.getElementById('modalCsrf');
+    const modalInputContainer = document.getElementById('modalInputContainer');
+    const modalNote = document.getElementById('modalNote');
+
+    modalForm.action = action;
+    modalTitle.textContent = title;
+    modalText.textContent = text;
+    modalConfirmBtn.textContent = btnText;
+    if(csrfToken) modalCsrf.value = csrfToken;
+    
+    // Handle optional input
+    if (showInput) {
+        modalInputContainer.classList.remove('hidden');
+        modalNote.value = ''; // Reset
+    } else {
+        modalInputContainer.classList.add('hidden');
+    }
+
+    // Reset and apply button class
+    modalConfirmBtn.className = `w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-5 py-2.5 text-sm font-bold text-white transition-all active:scale-95 sm:ml-3 sm:w-auto ${btnClass} hover:opacity-90`;
+    modalIconBg.className = `mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10 ${btnClass}`;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+</script>
+
 </body>
 </html>

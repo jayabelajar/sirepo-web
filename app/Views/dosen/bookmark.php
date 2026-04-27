@@ -79,12 +79,11 @@ $csrfBookmark = \App\Core\Security\Csrf::token();
                             <a href="<?= $base ?>/repository/<?= e($item['slug'] ?? '') ?>" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline">
                                 Lihat Detail &rarr;
                             </a>
-                            <form action="<?= $base ?>/bookmark/<?= e($item['slug'] ?? '') ?>/toggle" method="POST" onsubmit="return confirm('Hapus bookmark ini?')" class="inline">
-                                <input type="hidden" name="csrf_token" value="<?= e($csrfBookmark) ?>">
-                                <button class="text-xs font-semibold text-red-600 hover:underline">
-                                    Hapus
-                                </button>
-                            </form>
+                            <button type="button" 
+                                    onclick="openConfirmModal('<?= $base ?>/bookmark/<?= e($item['slug'] ?? '') ?>/toggle', 'Hapus Bookmark', 'Hapus repository ini dari koleksi simpanan Anda?', 'bg-rose-600', 'Ya, Hapus', '<?= e($csrfBookmark) ?>')"
+                                    class="text-xs font-semibold text-red-600 hover:underline">
+                                Hapus
+                            </button>
                         </div>
 
                         <div class="hidden sm:flex items-center gap-1 flex-shrink-0">
@@ -92,12 +91,11 @@ $csrfBookmark = \App\Core\Security\Csrf::token();
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </a>
                             
-                            <form action="<?= $base ?>/bookmark/<?= e($item['slug'] ?? '') ?>/toggle" method="POST" onsubmit="return confirm('Hapus bookmark ini?')" class="inline">
-                                <input type="hidden" name="csrf_token" value="<?= e($csrfBookmark) ?>">
-                                <button class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all shadow-sm" title="Hapus Bookmark">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                </button>
-                            </form>
+                            <button type="button" 
+                                    onclick="openConfirmModal('<?= $base ?>/bookmark/<?= e($item['slug'] ?? '') ?>/toggle', 'Hapus Bookmark', 'Hapus repository ini dari koleksi simpanan Anda?', 'bg-rose-600', 'Ya, Hapus', '<?= e($csrfBookmark) ?>')"
+                                    class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all shadow-sm" title="Hapus Bookmark">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
                         </div>
 
                     </div>

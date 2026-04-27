@@ -7,6 +7,14 @@ use App\Models\Repository;
 
 class DownloadController extends Controller
 {
+    public function index()
+    {
+        return $this->view('public/download', [
+            'title' => 'Unduh Aplikasi Mobile - Repositori IAI Hasan Jufri',
+            'download_link' => 'https://drive.google.com/drive/folders/1DabOv2j8KVBh3X3qPkOsc5zX-smbeQmk?usp=sharing'
+        ]);
+    }
+
     public function repository($slug)
     {
         $repo = (new Repository())->getBySlug($slug);

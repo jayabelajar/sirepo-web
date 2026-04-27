@@ -83,11 +83,15 @@ class DashboardController extends Controller
         [$chartJenisLabels, $chartJenisData] = $this->repoByJenis();
 
         // Statistik ringkas
+        $db = Database::getConnection();
+        $pendingCount = (int) $db->query("SELECT COUNT(*) FROM repository WHERE status = 'pending'")->fetchColumn();
+
         $stats = [
             'total_repository'   => $this->countTable('repository'),
             'total_prodi'        => $this->countTable('program_studi'),
             'total_mk'           => $this->countTable('mata_kuliah'),
             'total_user'         => $this->countTable('users'),
+            'total_pending'      => $pendingCount,
         ];
 
         $activities = $this->recentActivities(10);

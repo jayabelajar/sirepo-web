@@ -6,7 +6,7 @@
         'tagline'   => 'Sistem Informasi Repositori',
         'subtitle'  => 'Institut Agama Islam Hasan Jufri',
         'logo_alt'  => 'Logo Sistem Informasi Repository',
-        'logo_path' => '/assets/img/favicon.svg',
+        'logo_path' => '/assets/img/inhafi.png',
     ], $brand ?? []);
     $brandTaglineUpper = strtoupper((string) ($brand['tagline'] ?? ''));
     $brandSubtitleUpper = strtoupper((string) ($brand['subtitle'] ?? ''));

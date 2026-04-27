@@ -31,4 +31,16 @@ class ActivityLog extends Model
                 LIMIT :limit OFFSET :offset";
         return $this->query($sql, ['uid' => $userId, 'limit' => $limit, 'offset' => $offset])->fetchAll() ?: [];
     }
+
+    public function add(int $userId, string $type, string $description, string $status = 'success'): bool
+    {
+        $sql = "INSERT INTO {$this->table} (user_id, activity_type, description, status, created_at)
+                VALUES (:uid, :type, :desc, :status, NOW())";
+        return $this->execute($sql, [
+            'uid'    => $userId,
+            'type'   => $type,
+            'desc'   => $description,
+            'status' => $status
+        ]);
+    }
 }

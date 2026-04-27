@@ -95,19 +95,22 @@ $waveIcon = '&#128075;'; // wave emoji as entity to keep ASCII-safe
                 </div>
             </div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
-            <div class="flex justify-between items-start">
+        <a href="<?= $base_url ?>/admin/repository/pending" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
+            <div class="flex justify-between items-start relative z-10">
                 <div>
-                    <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wide">Mata Kuliah</p>
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800 mt-1 group-hover:text-purple-600 transition-colors">
-                        <?= number_format($stats['total_mk'] ?? 0) ?>
+                    <p class="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wide">Menunggu Review</p>
+                    <h3 class="text-2xl md:text-3xl font-bold <?= ($stats['total_pending'] ?? 0) > 0 ? 'text-amber-600' : 'text-slate-800' ?> mt-1 transition-colors">
+                        <?= number_format($stats['total_pending'] ?? 0) ?>
                     </h3>
                 </div>
-                <div class="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <div class="p-3 <?= ($stats['total_pending'] ?? 0) > 0 ? 'bg-amber-50 text-amber-600' : 'bg-slate-50 text-slate-400' ?> rounded-xl group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </div>
-        </div>
+            <?php if (($stats['total_pending'] ?? 0) > 0): ?>
+                <div class="absolute bottom-0 left-0 h-1 bg-amber-500 animate-pulse w-full"></div>
+            <?php endif; ?>
+        </a>
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
             <div class="flex justify-between items-start">
                 <div>

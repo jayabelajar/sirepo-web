@@ -13,7 +13,8 @@ use App\Controllers\Public\{
     RobotsController,
     HalamanController,
     RegisterController,
-    MaintenanceController
+    MaintenanceController,
+    DownloadController
 };
 
 /* AUTH controllers */
@@ -111,6 +112,7 @@ $router->get('/panduan',             [HalamanController::class, 'panduan']);
 $router->get('/kebijakan',           [HalamanController::class, 'privasi']);
 $router->get('/syarat',              [HalamanController::class, 'ketentuan']);
 $router->get('/kontak',              [HalamanController::class, 'kontak']);
+$router->get('/download',            [DownloadController::class, 'index']);
 
 /* telusuri */
 $router->get('/telusuri',                        [TelusuriController::class, 'index']);
@@ -212,6 +214,11 @@ $router->post('/reset-password/{token}', [ForgotPasswordController::class, 'subm
 $router->get('/mahasiswa/dashboard', [MahasiswaDashboard::class, 'index']);
 $router->get('/mahasiswa/bookmarks', [MahasiswaBookmark::class, 'index']);
 $router->get('/mahasiswa/my-repository', [MahasiswaMyRepository::class, 'index']);
+$router->get('/mahasiswa/my-repository/create', [MahasiswaMyRepository::class, 'create']);
+$router->post('/mahasiswa/my-repository/store', [MahasiswaMyRepository::class, 'store']);
+$router->get('/mahasiswa/my-repository/{id}/edit', [MahasiswaMyRepository::class, 'edit']);
+$router->post('/mahasiswa/my-repository/{id}/update', [MahasiswaMyRepository::class, 'update']);
+$router->post('/mahasiswa/my-repository/{id}/delete', [MahasiswaMyRepository::class, 'delete']);
 $router->get('/mahasiswa/profil', [MahasiswaProfil::class, 'index']);
 $router->post('/mahasiswa/profil', [MahasiswaProfil::class, 'update']);
 $router->get('/mahasiswa/telusuri', [MahasiswaTelusuri::class, 'redirect']);
@@ -247,6 +254,9 @@ $router->post('/admin/program-studi', [AdminProgramStudi::class, 'store']);
 $router->post('/admin/program-studi/{id}/update', [AdminProgramStudi::class, 'update']);
 $router->post('/admin/program-studi/{id}/delete', [AdminProgramStudi::class, 'delete']);
 $router->get('/admin/repository', [AdminRepository::class, 'index']);
+$router->get('/admin/repository/pending', [AdminRepository::class, 'pending']);
+$router->post('/admin/repository/{id}/approve', [AdminRepository::class, 'approve']);
+$router->post('/admin/repository/{id}/reject', [AdminRepository::class, 'reject']);
 $router->get('/admin/repository/create', [AdminRepository::class, 'create']);
 $router->get('/admin/repository/{id}/edit', [AdminRepository::class, 'edit']);
 $router->post('/admin/repository', [AdminRepository::class, 'store']);

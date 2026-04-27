@@ -207,6 +207,70 @@ class RepositoryController extends Controller
         return $this->redirect('/admin/repository');
     }
 
+    public function pending()
+    {
+        $admin = Auth::checkAdmin();
+        $repoModel  = new Repository();
+        
+        $filters = [
+            'q'      => trim($_GET['q'] ?? ''),
+            'status' => 'pending'
+        ];
+
+        $items = $repoModel->filter($filters, 100, 0);
+
+        return $this->view('admin/repository_pending', [
+            'admin'      => $admin,
+            'items'      => $items,
+            'csrf'       => Csrf::token(),
+            'breadcrumb' => [
+                ['label' => 'Dashboard', 'url' => '/admin/dashboard'],
+                ['label' => 'Repository', 'url' => '/admin/repository'],
+                ['label' => 'Menunggu Review'],
+            ],
+        ], 'admin');
+    }
+
+    public function approve($id)
+    {
+        Auth::checkAdmin();
+        if (!Csrf::check($_POST['csrf_token'] ?? '')) {
+            $_SESSION['flash_error'] = 'Sesi kadaluarsa.';
+            return $this->redirect('/admin/repository/pending');
+        }
+
+        $repoModel = new Repository();
+        $item = $repoModel->findById((int)$id);
+        if ($item) {
+            $item['status'] = 'approved';
+            $item['rejection_note'] = null; // Bersihkan catatan saat disetujui
+            $repoModel->updateById((int)$id, $item);
+            $_SESSION['flash_success'] = 'Repository berhasil diterbitkan.';
+        }
+
+        return $this->redirect('/admin/repository/pending');
+    }
+
+    public function reject($id)
+    {
+        Auth::checkAdmin();
+        if (!Csrf::check($_POST['csrf_token'] ?? '')) {
+            $_SESSION['flash_error'] = 'Sesi kadaluarsa.';
+            return $this->redirect('/admin/repository/pending');
+        }
+
+        $repoModel = new Repository();
+        $item = $repoModel->findById((int)$id);
+        if ($item) {
+            $item['status'] = 'rejected';
+            $item['rejection_note'] = trim($_POST['note'] ?? '');
+            $repoModel->updateById((int)$id, $item);
+            $_SESSION['flash_success'] = 'Repository ditolak.';
+        }
+
+        return $this->redirect('/admin/repository/pending');
+    }
+
     private function resolvePrimaryAuthorName(): string
     {
         $authorIds = $_POST['author_ids'] ?? [];
@@ -260,6 +324,7 @@ class RepositoryController extends Controller
             'file_pdf'         => $uploadedFile ?? $currentFile ?? null,
             'uploaded_by'      => $_POST['uploaded_by'] !== '' ? (int)$_POST['uploaded_by'] : null,
             'keywords'         => $_POST['keywords'] ?? null,
+            'status'           => $_POST['status'] ?? 'approved',
         ];
     }
 

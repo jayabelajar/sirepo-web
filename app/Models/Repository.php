@@ -386,12 +386,13 @@ class Repository extends Model
         $sql = "SELECT r.id, r.judul, r.author, r.tahun, r.slug, r.jenis_karya,
                        ps.nama_program_studi AS prodi,
                        mk.nama AS mata_kuliah,
-                       ru.role_in_repo
+                       MAX(ru.role_in_repo) AS role_in_repo
                 FROM repository r
                 JOIN repository_users ru ON ru.repository_id = r.id
                 LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
                 LEFT JOIN mata_kuliah mk ON mk.id = r.mata_kuliah_id
                 WHERE ru.user_id = :uid
+                GROUP BY r.id
                 ORDER BY r.created_at DESC
                 LIMIT :limit";
 
@@ -426,12 +427,13 @@ class Repository extends Model
         $sql = "SELECT r.*,
                        ps.nama_program_studi AS prodi,
                        mk.nama AS mata_kuliah,
-                       ru.role_in_repo
+                       MAX(ru.role_in_repo) AS role_in_repo
                 FROM repository r
                 JOIN repository_users ru ON ru.repository_id = r.id
                 LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
                 LEFT JOIN mata_kuliah mk ON mk.id = r.mata_kuliah_id
                 WHERE ru.user_id = :uid
+                GROUP BY r.id
                 ORDER BY r.created_at DESC
                 LIMIT :limit";
 
@@ -479,12 +481,13 @@ class Repository extends Model
         $where  = $this->buildFilterClause($filters, $params);
         $params['uid'] = $userId;
 
-        $sql = "SELECT r.*, ps.nama_program_studi AS prodi, mk.nama AS mata_kuliah, ru.role_in_repo
+        $sql = "SELECT r.*, ps.nama_program_studi AS prodi, mk.nama AS mata_kuliah, MAX(ru.role_in_repo) AS role_in_repo
                 FROM repository r
                 JOIN repository_users ru ON ru.repository_id = r.id AND ru.user_id = :uid
                 LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
                 LEFT JOIN mata_kuliah mk ON mk.id = r.mata_kuliah_id
                 {$where}
+                GROUP BY r.id
                 ORDER BY r.created_at DESC
                 LIMIT :limit OFFSET :offset";
 
@@ -500,7 +503,7 @@ class Repository extends Model
         $where  = $this->buildFilterClause($filters, $params);
         $params['uid'] = $userId;
 
-        $sql = "SELECT COUNT(*)
+        $sql = "SELECT COUNT(DISTINCT r.id)
                 FROM repository r
                 JOIN repository_users ru ON ru.repository_id = r.id AND ru.user_id = :uid
                 LEFT JOIN program_studi ps ON ps.id = r.program_studi_id
@@ -558,6 +561,12 @@ class Repository extends Model
         if ($jenis !== '' && $jenis !== null) {
             $params['jenis'] = $jenis;
             $where .= " AND r.jenis_karya = :jenis";
+        }
+
+        $status = $filters['status'] ?? null;
+        if ($status !== '' && $status !== null) {
+            $params['status'] = $status;
+            $where .= " AND r.status = :status";
         }
 
         return $where;
@@ -620,9 +629,9 @@ class Repository extends Model
     public function create(array $data): bool
     {
         $sql = "INSERT INTO {$this->table}
-                (judul, slug, jenis_karya, author, tahun, program_studi_id, mata_kuliah_id, abstrak, file_pdf, uploaded_by, keywords)
+                (judul, slug, jenis_karya, author, tahun, program_studi_id, mata_kuliah_id, abstrak, file_pdf, uploaded_by, keywords, status, rejection_note)
                 VALUES
-                (:judul, :slug, :jenis_karya, :author, :tahun, :program_studi_id, :mata_kuliah_id, :abstrak, :file_pdf, :uploaded_by, :keywords)";
+                (:judul, :slug, :jenis_karya, :author, :tahun, :program_studi_id, :mata_kuliah_id, :abstrak, :file_pdf, :uploaded_by, :keywords, :status, :rejection_note)";
 
         return $this->execute($sql, [
             'judul'            => $data['judul'],
@@ -636,6 +645,8 @@ class Repository extends Model
             'file_pdf'         => $data['file_pdf'] ?? null,
             'uploaded_by'      => $data['uploaded_by'] ?: null,
             'keywords'         => $data['keywords'] ?? null,
+            'status'           => $data['status'] ?? 'pending',
+            'rejection_note'   => $data['rejection_note'] ?? null,
         ]);
     }
 
@@ -652,7 +663,9 @@ class Repository extends Model
                     abstrak = :abstrak,
                     file_pdf = :file_pdf,
                     uploaded_by = :uploaded_by,
-                    keywords = :keywords
+                    keywords = :keywords,
+                    status = :status,
+                    rejection_note = :rejection_note
                 WHERE id = :id";
 
         return $this->execute($sql, [
@@ -667,6 +680,8 @@ class Repository extends Model
             'file_pdf'         => $data['file_pdf'] ?? null,
             'uploaded_by'      => $data['uploaded_by'] ?: null,
             'keywords'         => $data['keywords'] ?? null,
+            'status'           => $data['status'] ?? 'approved',
+            'rejection_note'   => $data['rejection_note'] ?? null,
             'id'               => $id,
         ]);
     }
@@ -763,7 +778,7 @@ class Repository extends Model
         }
 
         if ($this->hasColumn('status')) {
-            $clauses[] = "(r.status IS NULL OR r.status NOT IN ('draft','private'))";
+            $clauses[] = "r.status = 'approved'";
         }
 
         $keyword = trim($filters['q'] ?? '');
