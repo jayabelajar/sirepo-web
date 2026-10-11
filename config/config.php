@@ -32,15 +32,30 @@ $env = static function (string $key, $default = null) {
 
 $envAppEnv = $env('APP_ENV', 'local');
 $configuredBaseUrl = trim((string) $env('APP_BASE_URL', ''));
-$trustedHosts = array_filter(array_map('trim', explode(',', (string) $env('APP_TRUSTED_HOSTS', ''))));
-$httpHost = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
-$httpHost = preg_replace('/:\d+$/', '', $httpHost) ?: '';
-$hostIsValid = $httpHost !== '' && (bool) preg_match('/^[a-z0-9.-]+$/i', $httpHost);
-$hostIsTrusted = empty($trustedHosts) || in_array($httpHost, array_map('strtolower', $trustedHosts), true);
+$trustedHosts = array_values(array_filter(array_map(static function (string $host): string {
+    $host = strtolower(trim($host));
+    return preg_replace('/:\d+$/', '', $host) ?: '';
+}, explode(',', (string) $env('APP_TRUSTED_HOSTS', '')))));
+
+$httpHostHeader = strtolower(trim((string) ($_SERVER['HTTP_HOST'] ?? '')));
+$httpHostName = preg_replace('/:\d+$/', '', $httpHostHeader) ?: '';
+$httpPort = '';
+if (preg_match('/:(\d+)$/', $httpHostHeader, $portMatch)) {
+    $port = (int) $portMatch[1];
+    if ($port > 0 && $port <= 65535) {
+        $httpPort = ':' . $port;
+    }
+}
+
+$hostIsValid = $httpHostName !== '' && (bool) preg_match('/^[a-z0-9.-]+$/i', $httpHostName);
+$hostIsTrusted = empty($trustedHosts) || in_array($httpHostName, $trustedHosts, true);
 if (!$hostIsValid || !$hostIsTrusted) {
     $fallbackHost = parse_url($configuredBaseUrl, PHP_URL_HOST) ?: 'localhost';
-    $httpHost = strtolower((string) $fallbackHost);
+    $fallbackPort = parse_url($configuredBaseUrl, PHP_URL_PORT);
+    $httpHostName = strtolower((string) $fallbackHost);
+    $httpPort = $fallbackPort ? ':' . (int) $fallbackPort : '';
 }
+$httpHost = $httpHostName . $httpPort;
 
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
