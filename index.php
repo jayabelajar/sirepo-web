@@ -1,9 +1,7 @@
 <?php
 
 use App\Core\App;
-
-// Start session
-if (session_status() === PHP_SESSION_NONE) session_start();
+use App\Core\Security\Headers;
 
 // Load .env if exists (simple parser: KEY=VALUE, quotes optional)
 $envFile = __DIR__ . '/.env';
@@ -22,6 +20,24 @@ if (is_file($envFile)) {
     }
 }
 
+$isHttps = (
+    (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)
+);
+
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_strict_mode', '1');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
+
 // AUTOLOAD (ROOT VERSION)
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
@@ -36,6 +52,17 @@ spl_autoload_register(function ($class) {
         require_once $file;
     }
 });
+
+$isApiRequest = strpos(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/', '/api') === 0;
+Headers::apply($isApiRequest);
+if ($isApiRequest) {
+    $corsOrigins = array_filter(array_map('trim', explode(',', (string) ($_ENV['API_CORS_ORIGINS'] ?? getenv('API_CORS_ORIGINS') ?: '*'))));
+    Headers::applyCors($corsOrigins ?: ['*']);
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+        http_response_code(204);
+        exit;
+    }
+}
 
 // LOAD ROUTES (ROOT)
 require_once __DIR__ . '/config/routes.php';

@@ -30,22 +30,33 @@ $env = static function (string $key, $default = null) {
     return ($value === false || $value === null) ? $default : $value;
 };
 
-$httpHost = $_SERVER['HTTP_HOST'] ?? '';
+$envAppEnv = $env('APP_ENV', 'local');
+$configuredBaseUrl = trim((string) $env('APP_BASE_URL', ''));
+$trustedHosts = array_filter(array_map('trim', explode(',', (string) $env('APP_TRUSTED_HOSTS', ''))));
+$httpHost = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+$httpHost = preg_replace('/:\d+$/', '', $httpHost) ?: '';
+$hostIsValid = $httpHost !== '' && (bool) preg_match('/^[a-z0-9.-]+$/i', $httpHost);
+$hostIsTrusted = empty($trustedHosts) || in_array($httpHost, array_map('strtolower', $trustedHosts), true);
+if (!$hostIsValid || !$hostIsTrusted) {
+    $fallbackHost = parse_url($configuredBaseUrl, PHP_URL_HOST) ?: 'localhost';
+    $httpHost = strtolower((string) $fallbackHost);
+}
+
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
 // Hilangkan suffix "/public" agar base mengarah ke root project
 $basePath = preg_replace('~/public$~', '', $scriptDir) ?: '';
 $dynamicBase = ($httpHost ? $scheme . '://' . $httpHost : 'http://localhost') . $basePath;
 
-$envAppEnv = $env('APP_ENV', 'local');
-$isLocalHost = $httpHost && (str_contains($httpHost, 'localhost') || str_contains($httpHost, '127.0.0.1') || $envAppEnv === 'local');
-$defaultBase = $dynamicBase ?: 'http://localhost';
+$defaultBase = $envAppEnv === 'production' && $configuredBaseUrl !== ''
+    ? $configuredBaseUrl
+    : ($dynamicBase ?: ($configuredBaseUrl ?: 'http://localhost'));
 
 return [
     // Branding utama situs
     'app_name'      => $env('APP_NAME', 'Sistem Informasi Repository'),
     // Pakai host/path yang sedang diakses; jika tidak ada (CLI), pakai APP_BASE_URL atau default.
-    'base_url'      => rtrim((string) ($dynamicBase ?: $env('APP_BASE_URL', $defaultBase)), '/'),
+    'base_url'      => rtrim((string) $defaultBase, '/'),
     // Gunakan env dan kosongkan default agar kredensial tidak tersimpan di kode publik
     'api_secret'    => $env('APP_API_SECRET', ''),
     'environment'   => $env('APP_ENV', 'production'),
@@ -81,4 +92,6 @@ return [
 
     // API Token TTL (default: 4 bulan / 120 hari)
     'api_token_ttl' => (int) $env('APP_API_TOKEN_TTL', 60 * 60 * 24 * 30 * 4),
+    'trusted_hosts' => $trustedHosts,
+    'api_cors_origins' => array_filter(array_map('trim', explode(',', (string) $env('API_CORS_ORIGINS', '*')))),
 ];

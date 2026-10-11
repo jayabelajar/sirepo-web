@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\App;
+use App\Core\Security\Headers;
 
 $envFile = __DIR__ . '/../.env';
 if (is_file($envFile)) {
@@ -47,6 +48,17 @@ spl_autoload_register(function ($class) {
 
     if (file_exists($file)) require_once $file;
 });
+
+$isApiRequest = strpos(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/', '/api') === 0;
+Headers::apply($isApiRequest);
+if ($isApiRequest) {
+    $corsOrigins = array_filter(array_map('trim', explode(',', (string) ($_ENV['API_CORS_ORIGINS'] ?? getenv('API_CORS_ORIGINS') ?: '*'))));
+    Headers::applyCors($corsOrigins ?: ['*']);
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+        http_response_code(204);
+        exit;
+    }
+}
 
 require_once __DIR__ . '/../config/routes.php';
 

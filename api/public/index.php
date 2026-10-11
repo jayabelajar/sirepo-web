@@ -2,9 +2,27 @@
 // Front controller untuk subdomain API.
 // Dialihkan ke aplikasi utama supaya logika tetap satu sumber.
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+$envFile = __DIR__ . '/../../.env';
+if (is_file($envFile)) {
+    foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        $line = trim($line);
+        if ($line === '' || strpos($line, '#') === 0) continue;
+        [$k, $v] = array_pad(explode('=', $line, 2), 2, '');
+        $k = trim($k);
+        $v = trim($v);
+        if ($v !== '' && ($v[0] === '"' || $v[0] === "'")) {
+            $v = trim($v, '\'"');
+        }
+        putenv("$k=$v");
+        $_ENV[$k] = $v;
+    }
+}
+
+require_once __DIR__ . '/../../app/Core/Security/Headers.php';
+
+$corsOrigins = array_filter(array_map('trim', explode(',', (string) ($_ENV['API_CORS_ORIGINS'] ?? getenv('API_CORS_ORIGINS') ?: '*'))));
+\App\Core\Security\Headers::apply(true);
+\App\Core\Security\Headers::applyCors($corsOrigins ?: ['*']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     http_response_code(204);

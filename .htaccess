@@ -1,4 +1,10 @@
 RewriteEngine On
 
+<FilesMatch "^(\.env|\.env\..*|package(-lock)?\.json|seed\.php|dev-router\.php)$">
+  Require all denied
+</FilesMatch>
+
+RewriteRule ^(app|config|storage|tmp|resources|node_modules)(/|$) - [F,L]
+
 RewriteRule ^$ public/ [L]
 RewriteRule (.*) public/$1 [L]
