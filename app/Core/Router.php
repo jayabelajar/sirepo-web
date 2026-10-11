@@ -42,6 +42,10 @@ class Router
     public function dispatch($method, $requestUri)
     {
         $method = strtoupper($method);
+        if ($method === 'HEAD') {
+            $method = 'GET';
+        }
+
         // Ambil path tanpa query string (tanpa menghapus $_GET!)
         $path = parse_url($requestUri, PHP_URL_PATH);
 

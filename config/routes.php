@@ -211,6 +211,15 @@ $router->post('/reset-password/{token}', [ForgotPasswordController::class, 'subm
 /* ============================================================
    DASHBOARD MAHASISWA
 ============================================================ */
+$router->get('/mahasiswa', static function () use ($redirectTo): void {
+    $redirectTo('/mahasiswa/dashboard');
+});
+$router->get('/__mahasiswa', static function () use ($redirectTo): void {
+    $redirectTo('/mahasiswa/dashboard');
+});
+$router->get('/__mahasiswa/dashboard', static function () use ($redirectTo): void {
+    $redirectTo('/mahasiswa/dashboard');
+});
 $router->get('/mahasiswa/dashboard', [MahasiswaDashboard::class, 'index']);
 $router->get('/mahasiswa/bookmarks', [MahasiswaBookmark::class, 'index']);
 $router->get('/mahasiswa/my-repository', [MahasiswaMyRepository::class, 'index']);
@@ -229,6 +238,15 @@ $router->post('/bookmark/{slug}/toggle', [BookmarkController::class, 'toggle']);
 /* ============================================================
    DASHBOARD DOSEN
 ============================================================ */
+$router->get('/dosen', static function () use ($redirectTo): void {
+    $redirectTo('/dosen/dashboard');
+});
+$router->get('/__dosen', static function () use ($redirectTo): void {
+    $redirectTo('/dosen/dashboard');
+});
+$router->get('/__dosen/dashboard', static function () use ($redirectTo): void {
+    $redirectTo('/dosen/dashboard');
+});
 $router->get('/dosen/dashboard', [DosenDashboard::class, 'index']);
 $router->get('/dosen/my-repository', [DosenMyRepository::class, 'index']);
 $router->post('/dosen/my-repository', [DosenMyRepository::class, 'store']);
@@ -248,6 +266,15 @@ $router->post('/dosen/profile', [DosenProfil::class, 'update']);
 /* ============================================================
    DASHBOARD ADMIN
 ============================================================ */
+$router->get('/admin', static function () use ($redirectTo): void {
+    $redirectTo('/admin/dashboard');
+});
+$router->get('/__admin', static function () use ($redirectTo): void {
+    $redirectTo('/admin/dashboard');
+});
+$router->get('/__admin/dashboard', static function () use ($redirectTo): void {
+    $redirectTo('/admin/dashboard');
+});
 $router->get('/admin/dashboard', [AdminDashboard::class, 'index']);
 $router->get('/admin/program-studi', [AdminProgramStudi::class, 'index']);
 $router->post('/admin/program-studi', [AdminProgramStudi::class, 'store']);
@@ -289,6 +316,12 @@ $router->post('/admin/logs/reset-old', [AdminLog::class, 'resetOld']);
    DASHBOARD DEVELOPER
 ============================================================ */
 $router->get('/developer', static function () use ($redirectTo): void {
+    $redirectTo('/developer/dashboard');
+});
+$router->get('/__developer', static function () use ($redirectTo): void {
+    $redirectTo('/developer/dashboard');
+});
+$router->get('/__developer/dashboard', static function () use ($redirectTo): void {
     $redirectTo('/developer/dashboard');
 });
 $router->get('/developer/dashboard', [DeveloperDashboard::class, 'index']);
