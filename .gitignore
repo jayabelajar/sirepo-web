@@ -10,6 +10,7 @@ bun.lockb
 .env
 api/.env
 API_FLUTTER_GUIDE
+docs/
 
 # Logs & runtime files
 storage/logs/
@@ -29,3 +30,5 @@ Thumbs.db
 # Database dumps
 *.sql
 *.dump
+!database/
+!database/*.sql
