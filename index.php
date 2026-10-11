@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\App;
+use App\Core\Http\StaticFile;
 use App\Core\Security\Headers;
 
 // Load .env if exists (simple parser: KEY=VALUE, quotes optional)
@@ -52,6 +53,8 @@ spl_autoload_register(function ($class) {
         require_once $file;
     }
 });
+
+StaticFile::serveIfPublic(__DIR__ . '/public');
 
 $isApiRequest = strpos(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/', '/api') === 0;
 Headers::apply($isApiRequest);
