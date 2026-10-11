@@ -9,6 +9,33 @@ class Repository extends Model
     protected string $table = 'repository';
     private array $columnCache = [];
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->ensureSchema();
+    }
+
+    private function ensureSchema(): void
+    {
+        if (!$this->hasColumn('status')) {
+            $this->db->exec("
+                ALTER TABLE {$this->table}
+                ADD COLUMN status ENUM('pending','approved','rejected','draft','private') NOT NULL DEFAULT 'approved'
+                AFTER keywords
+            ");
+            $this->columnCache['status'] = true;
+        }
+
+        if (!$this->hasColumn('rejection_note')) {
+            $this->db->exec("
+                ALTER TABLE {$this->table}
+                ADD COLUMN rejection_note TEXT NULL
+                AFTER status
+            ");
+            $this->columnCache['rejection_note'] = true;
+        }
+    }
+
     public function searchPublic(array $filters, int $limit = 10, int $offset = 0): array
     {
         $params = [];

@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Core\Controller;
 use App\Core\Security\Auth;
 use App\Core\Database;
+use App\Models\Repository;
 
 class DashboardController extends Controller
 {
@@ -84,6 +85,7 @@ class DashboardController extends Controller
 
         // Statistik ringkas
         $db = Database::getConnection();
+        new Repository();
         $pendingCount = (int) $db->query("SELECT COUNT(*) FROM repository WHERE status = 'pending'")->fetchColumn();
 
         $stats = [
